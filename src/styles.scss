@@ -1,7 +1,16 @@
+$primary: #03C988;
+$secondory: #1C82AD;
+$background: #00337C;
+$background-dark: #13005A;
+
+$light-primary: #00FFCA;
+$light-secondory: #05BFDB;
+$light-disabled: #088395;
+$light-background: #0A4D68;
+
+$text-color: #f46036;
+$app-blue: #03a9f4;
+$app-white: #f1f2eb;
+
+
 @import url(~fullpage.js/dist/fullpage.min.css);
-@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import '~@fortawesome/fontawesome-free/scss/solid.scss';
-@import '~@fortawesome/fontawesome-free/scss/regular.scss';
-@import '~@fortawesome/fontawesome-free/scss/brands.scss';
- 
-@import '~mdb-angular-ui-kit/assets/scss/mdb.scss';

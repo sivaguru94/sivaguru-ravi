@@ -7,16 +7,6 @@ import { constants } from './utils/constants';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  config = constants.FULL_PAGE_JS_CONFIG;
-  fullpage_api: any;
-
-  constructor() {}
-
   ngOnInit() {
   }
-
-  getRef(fullPageRef: any) {
-    this.fullpage_api = fullPageRef;
-  }
-
 }
