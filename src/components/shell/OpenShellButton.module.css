@@ -1,0 +1,24 @@
+.button {
+  margin-top: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 12px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.caret {
+  color: var(--accent);
+}

@@ -1,0 +1,190 @@
+/* ── launcher ─────────────────────────────────────────────── */
+.launcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  text-shadow: var(--glow);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.launcher:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* ── window ───────────────────────────────────────────────── */
+.window {
+  position: fixed;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+}
+
+.bar {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: move;
+  background: var(--panel);
+  user-select: none;
+  flex-shrink: 0;
+  touch-action: none;
+}
+
+.lights {
+  display: flex;
+  gap: 6px;
+}
+
+.lights > button {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.lightRed {
+  background: #ff5f57;
+}
+
+.lightYellow {
+  background: #febc2e;
+}
+
+.lightGreen {
+  background: #28c840;
+}
+
+.title {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+}
+
+/* ── body / log / prompt ──────────────────────────────────── */
+.body {
+  padding: 16px;
+  height: 280px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  cursor: text;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--fg);
+}
+
+.line[data-tone="dim"] {
+  color: var(--dim);
+}
+
+.line[data-tone="accent"] {
+  color: var(--accent);
+}
+
+.promptRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.promptLabel {
+  color: var(--accent);
+  text-shadow: var(--glow);
+  white-space: nowrap;
+}
+
+.inputWrap {
+  flex: 1;
+  min-width: 80px;
+  position: relative;
+  display: flex;
+}
+
+.ghost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  white-space: pre;
+  overflow: hidden;
+  font-size: 13.5px;
+  line-height: inherit;
+}
+
+.ghostHidden {
+  visibility: hidden;
+}
+
+.ghostRemainder {
+  color: var(--dim);
+  opacity: 0.55;
+}
+
+.input {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 13.5px;
+  caret-color: var(--accent);
+}
+
+/* ── resize handle ────────────────────────────────────────── */
+.resizeHandle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 28px;
+  height: 28px;
+  cursor: nwse-resize;
+  color: var(--dim);
+  font-size: 11px;
+  line-height: 28px;
+  text-align: center;
+  user-select: none;
+  opacity: 0.7;
+  touch-action: none;
+}
+
+/* iOS zoom guard */
+@media (pointer: coarse) {
+  .input,
+  .ghost {
+    font-size: 16px;
+  }
+}

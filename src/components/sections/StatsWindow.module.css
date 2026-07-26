@@ -1,0 +1,76 @@
+.window {
+  margin-top: 64px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.bar {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lights {
+  display: flex;
+  gap: 6px;
+}
+
+.lights > span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.red {
+  background: #ff5f57;
+}
+
+.yellow {
+  background: #febc2e;
+}
+
+.green {
+  background: #28c840;
+}
+
+.label {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.cell {
+  padding: 22px 16px;
+  border-right: 1px solid var(--line);
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+.numeral {
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 800;
+  color: var(--accent);
+  text-shadow: var(--glow);
+}
+
+.numeral > span {
+  display: inline-block;
+}
+
+.caption {
+  font-size: 11px;
+  color: var(--dim);
+  margin-top: 6px;
+  letter-spacing: 0.06em;
+}

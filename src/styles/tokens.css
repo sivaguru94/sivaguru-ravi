@@ -1,0 +1,49 @@
+/*
+ * Design-token contract — the single source of themed values.
+ * Spec: design/handoff/README.md §Design Tokens (signed off — do not redesign).
+ * Never hardcode a themed color outside this file.
+ *
+ * Consumed by both the site and (eventually) the extracted terminal design
+ * system; Angular bindings will import this same sheet.
+ */
+
+:root {
+  /* dark theme (default) */
+  --bg: #050705;
+  --panel: rgba(255, 255, 255, 0.015);
+  --fg: #e6efe6;
+  --dim: #6f7d6f;
+  --accent: #4af07a;
+  --accent-soft: rgba(74, 240, 122, 0.06);
+  --line: rgba(74, 240, 122, 0.16);
+  --nav-bg: rgba(5, 7, 5, 0.85);
+
+  /* derived effect tokens — components never branch on theme in JS */
+  --glow: 0 0 16px rgba(74, 240, 122, 0.45);
+  --scanlines-opacity: 0.3;
+
+  /* alternate accents (token-level swap only, no UI):
+   *   amber : --accent:#ffb347; light #d) accent = ×0.5 per channel
+   *   cyan  : --accent:#5ad7ff;
+   *   white : --accent:#e6efe6;
+   * light-theme accent is always dark accent ×0.5 per RGB channel. */
+}
+
+/* user pref (shell `scanlines off`) — stamped pre-paint by the inline script */
+:root[data-scanlines="off"] {
+  --scanlines-opacity: 0;
+}
+
+:root[data-theme="light"] {
+  --bg: #f2f1ea;
+  --panel: rgba(0, 0, 0, 0.025);
+  --fg: #1c211c;
+  --dim: #57605a;
+  --accent: #25783d; /* #4af07a ×0.5 per channel */
+  --accent-soft: rgba(37, 120, 61, 0.07);
+  --line: rgba(20, 40, 25, 0.18);
+  --nav-bg: rgba(242, 241, 234, 0.9);
+
+  --glow: none;
+  --scanlines-opacity: 0;
+}

@@ -1,27 +1,36 @@
-# MyPofile
+# shinigami-rog.cc
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0.
+Personal portfolio of **Sivaguru Ravi** (a.k.a. `shinigami-rog`) — Senior SDE,
+Bangalore. A terminal-styled single-page site with an interactive shell,
+built with Next.js (App Router) and deployed on Vercel.
 
-## Development server
+```
+$ whoami --verbose
+Sivaguru Ravi — Senior SDE · 9+ yrs · Java Spring Boot · Angular
+alias: shinigami-rog · web: shinigami-rog.cc
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Stack
 
-## Code scaffolding
+- Next.js (App Router) + React + TypeScript
+- CSS Modules over a CSS-custom-property token sheet (dark/light theming)
+- Zero-dependency animation core (rAF tween + IntersectionObserver)
+- Playwright (smoke + visual regression)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Develop
 
-## Build
+```bash
+npm ci
+npm run dev
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+`npm run build` for production, `npx playwright test` for e2e.
 
-## Running unit tests
+## Repo map
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- `src/app` — routes, layout, metadata
+- `src/core` — framework-agnostic terminal/animation engines
+- `src/components` — React bindings
+- `src/styles/tokens.css` — the design-token contract
+- `design/handoff` — signed-off design package (source of truth)
+- `plan-revised.md` — implementation plan (council-reviewed)

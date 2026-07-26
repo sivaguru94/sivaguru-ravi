@@ -1,0 +1,51 @@
+.section {
+  scroll-margin-top: 72px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  border-top: 1px solid var(--line);
+}
+
+.cmd {
+  margin-bottom: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 36px 48px;
+}
+
+.colHeader {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer {
+  margin-top: 44px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--line);
+  font-size: 13px;
+  color: var(--dim);
+  line-height: 1.7;
+}
+
+.footerAccent {
+  color: var(--accent);
+}

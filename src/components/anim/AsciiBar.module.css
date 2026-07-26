@@ -1,0 +1,15 @@
+.bar {
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.fill {
+  color: var(--accent);
+}
+
+.rest {
+  color: var(--dim);
+  opacity: 0.3;
+}

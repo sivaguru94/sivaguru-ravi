@@ -1,0 +1,15 @@
+.wrap {
+  position: relative;
+  display: inline;
+}
+
+/* reserves the final line box (incl. wrapping) without being visible */
+.reserve {
+  visibility: hidden;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  white-space: inherit;
+}

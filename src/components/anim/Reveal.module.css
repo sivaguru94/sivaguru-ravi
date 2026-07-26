@@ -1,0 +1,23 @@
+/* initial hidden state only when JS is present (stamped pre-paint) */
+:global(html[data-js]) .reveal {
+  opacity: 0;
+  transform: translateX(-14px);
+}
+
+:global(html[data-js]) .reveal.done {
+  opacity: 1;
+  transform: none;
+}
+
+/* reduced-motion users must never see the hidden state, even pre-hydration */
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-js]) .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+:global(html[data-js][data-motion="off"]) .reveal {
+  opacity: 1;
+  transform: none;
+}
