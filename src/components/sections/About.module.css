@@ -1,0 +1,46 @@
+.section {
+  scroll-margin-top: 72px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  border-top: 1px solid var(--line);
+}
+
+.cmd {
+  margin-bottom: 28px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+}
+
+.heading {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lead {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--fg);
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.sub {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--dim);
+}

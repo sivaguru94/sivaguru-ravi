@@ -1,0 +1,14 @@
+.line {
+  font-size: 14px;
+  color: var(--dim);
+}
+
+.prompt {
+  color: var(--accent);
+  text-shadow: var(--glow);
+}
+
+.cursor {
+  animation: blink 1s infinite;
+  color: var(--accent);
+}
