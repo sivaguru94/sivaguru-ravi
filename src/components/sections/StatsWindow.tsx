@@ -1,3 +1,4 @@
+import { CountUp } from "../anim/CountUp";
 import styles from "./StatsWindow.module.css";
 
 const STATS = [
@@ -7,11 +8,20 @@ const STATS = [
   { to: 8, suffix: "", label: "SECURITY_TOOLS" },
 ] as const;
 
-/* Framed stats terminal window. M3 swaps the numeral text for <CountUp>
- * leaves (final geometry already reserved by min-width in ch). */
-export function StatsWindow() {
+/* Framed stats terminal window. Count-ups animate on scroll-in; final
+ * geometry is reserved with min-width in ch (zero CLS). */
+export function StatsWindow({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
   return (
-    <div className={styles.window}>
+    <div
+      className={className ? `${styles.window} ${className}` : styles.window}
+      style={style}
+    >
       <div className={styles.bar}>
         <span className={styles.lights}>
           <span className={styles.red} />
@@ -25,14 +35,11 @@ export function StatsWindow() {
       <div className={styles.grid}>
         {STATS.map((s) => (
           <div key={s.label} className={styles.cell}>
-            <div className={styles.numeral}>
-              <span
-                data-count
-                style={{ minWidth: `${String(s.to).length + s.suffix.length}ch` }}
-              >
-                {s.to}
-                {s.suffix}
-              </span>
+            <div
+              className={styles.numeral}
+              style={{ minWidth: `${String(s.to).length + s.suffix.length}ch` }}
+            >
+              <CountUp to={s.to} suffix={s.suffix} />
             </div>
             <div className={styles.caption}>{s.label}</div>
           </div>

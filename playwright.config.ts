@@ -15,7 +15,9 @@ export default defineConfig({
   webServer: {
     command: `npm run build && npm run start -- -p ${PORT}`,
     port: PORT,
-    reuseExistingServer: !process.env.CI,
+    // never reuse: a stale `next start` from an older build serves dead
+    // asset hashes and poisons the whole suite (bitten twice)
+    reuseExistingServer: false,
     timeout: 180_000,
   },
   projects: [

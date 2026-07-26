@@ -1,25 +1,25 @@
 import { CommandLine } from "../common/CommandLine";
 import { OpenShellButton } from "../shell/OpenShellButton";
+import { Reveal } from "../anim/Reveal";
 import styles from "./Contact.module.css";
 
 export function Contact() {
   return (
     <section id="contact" className={styles.section}>
       <div className={styles.inner}>
-        <CommandLine
-          text="ping shinigami-rog --all-channels"
-          className={styles.cmd}
-        />
-        <h2 className={styles.heading}>
+        <Reveal className={styles.cmd}>
+          <CommandLine text="ping shinigami-rog --all-channels" />
+        </Reveal>
+        <Reveal as="h2" className={styles.heading}>
           Let&apos;s build
           <br />
           something
           <span className={styles.underscore} aria-hidden="true">
             _
           </span>
-        </h2>
+        </Reveal>
 
-        <div className={styles.rows}>
+        <Reveal delay={80} className={styles.rows}>
           <a href="mailto:sivaguru94@gmail.com" className={styles.rowLink}>
             <span className={styles.label}>EMAIL</span>
             <span className={styles.accentValue}>sivaguru94@gmail.com</span>
@@ -50,9 +50,11 @@ export function Contact() {
             <span className={styles.label}>LOCATION</span>
             <span>Bangalore, India</span>
           </div>
-        </div>
+        </Reveal>
 
-        <OpenShellButton />
+        <Reveal delay={120}>
+          <OpenShellButton />
+        </Reveal>
       </div>
     </section>
   );

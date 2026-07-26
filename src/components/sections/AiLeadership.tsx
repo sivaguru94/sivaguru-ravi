@@ -1,3 +1,5 @@
+import { Reveal } from "../anim/Reveal";
+import { TypedCommand } from "../anim/TypedCommand";
 import styles from "./AiLeadership.module.css";
 import cmdStyles from "../common/CommandLine.module.css";
 
@@ -25,30 +27,34 @@ export function AiLeadership() {
     <section id="ai" className={styles.section}>
       <div className={styles.inner}>
         {/* command line inlined: the AI-NATIVE badge sits on the same row */}
-        <div className={styles.cmdRow}>
+        <Reveal className={styles.cmdRow}>
           <span className={cmdStyles.prompt}>$</span>&nbsp;
-          <span data-cmd>./ai-leadership --status</span>
+          <span data-cmd>
+            <TypedCommand text="./ai-leadership --status" speed={32} mode="io" />
+          </span>
           <span className={cmdStyles.cursor} aria-hidden="true">
             ▊
           </span>
           <span className={styles.badge}>AI-NATIVE</span>
-        </div>
+        </Reveal>
 
-        <h2 className={styles.heading}>AI-ASSISTED ENGINEERING LEADERSHIP</h2>
-        <p className={styles.intro}>
+        <Reveal as="h2" className={styles.heading}>
+          AI-ASSISTED ENGINEERING LEADERSHIP
+        </Reveal>
+        <Reveal as="p" className={styles.intro} delay={60}>
           # Driving Claude &amp; AI automation adoption across the org —
           <br /># turning individual workflows into reusable engineering
           leverage.
-        </p>
+        </Reveal>
 
         <div className={styles.grid}>
-          {CARDS.map((c) => (
-            <div key={c.label} className={styles.card}>
+          {CARDS.map((c, i) => (
+            <Reveal key={c.label} delay={i * 60} className={styles.card}>
               <div className={styles.cardLabel}>{c.label}</div>
               <p className={styles.cardCopy}>{c.copy}</p>
-            </div>
+            </Reveal>
           ))}
-          <div className={styles.highlight}>
+          <Reveal delay={240} className={styles.highlight}>
             <div className={styles.status}>
               <span className={styles.dot} aria-hidden="true" />
               <span className={styles.statusText}>
@@ -62,7 +68,7 @@ export function AiLeadership() {
               A shared memory layer so AI carries context across projects and
               teams.
             </p>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

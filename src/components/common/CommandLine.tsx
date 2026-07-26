@@ -1,9 +1,10 @@
+import { TypedCommand } from "../anim/TypedCommand";
 import styles from "./CommandLine.module.css";
 
 /*
- * Section command line: `$ <cmd>▊`. Server component — renders the full text
- * (SEO/no-JS). M3 wraps the text in the TypedCommand client leaf, which
- * reserves this exact line box and types over it (zero CLS).
+ * Section command line: `$ <cmd>▊`. Server component — SSR carries the full
+ * text; the TypedCommand leaf reserves the exact line box and types over it
+ * on scroll-in (32ms/char, zero CLS).
  */
 export function CommandLine({
   text,
@@ -14,7 +15,10 @@ export function CommandLine({
 }) {
   return (
     <div className={className ? `${styles.line} ${className}` : styles.line}>
-      <span className={styles.prompt}>$</span> <span data-cmd>{text}</span>
+      <span className={styles.prompt}>$</span>{" "}
+      <span data-cmd>
+        <TypedCommand text={text} speed={32} mode="io" />
+      </span>
       <span className={styles.cursor} aria-hidden="true">
         ▊
       </span>

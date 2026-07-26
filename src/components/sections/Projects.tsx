@@ -1,4 +1,5 @@
 import { CommandLine } from "../common/CommandLine";
+import { Reveal } from "../anim/Reveal";
 import styles from "./Projects.module.css";
 
 const ROWS = [
@@ -50,10 +51,12 @@ const ROWS = [
 export function Projects() {
   return (
     <section id="projects" className={styles.section}>
-      <CommandLine text="ls -la projects/" className={styles.cmd} />
+      <Reveal className={styles.cmd}>
+        <CommandLine text="ls -la projects/" />
+      </Reveal>
       <div className={styles.frame}>
         {ROWS.map((row) => (
-          <div
+          <Reveal
             key={row.idx}
             className={
               "highlight" in row && row.highlight
@@ -65,7 +68,7 @@ export function Projects() {
             <span className={styles.name}>{row.name}</span>
             <span className={styles.desc}>{row.desc}</span>
             <span className={styles.date}>{row.date}</span>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

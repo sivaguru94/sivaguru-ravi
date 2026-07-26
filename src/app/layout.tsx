@@ -32,9 +32,11 @@ export const viewport: Viewport = {
  * initial states in CSS (no JS -> full content visible).
  */
 const themeInit =
-  "try{var t=localStorage.getItem('theme')}catch(e){}" +
+  "try{var t=localStorage.getItem('theme'),m=localStorage.getItem('motion'),s=localStorage.getItem('scanlines')}catch(e){}" +
   "var d=document.documentElement;" +
   "d.dataset.theme=t==='light'?'light':'dark';" +
+  "if(m==='off')d.dataset.motion='off';" +
+  "if(s==='off')d.dataset.scanlines='off';" +
   "d.dataset.js='';";
 
 export default function RootLayout({

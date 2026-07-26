@@ -11,7 +11,9 @@ test.describe("sections (M2 pixel pass)", () => {
   test("hero renders full copy and stats", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("h1")).toContainText("Sivaguru");
-    await expect(page.getByText("whoami --verbose")).toBeVisible();
+    await expect(page.locator("[data-hero-type]")).toContainText(
+      "whoami --verbose",
+    );
     await expect(
       page.getByText("SENIOR SDE · 9+ YRS · JAVA SPRING BOOT · ANGULAR"),
     ).toBeVisible();

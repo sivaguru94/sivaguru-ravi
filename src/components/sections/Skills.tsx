@@ -1,4 +1,6 @@
 import { CommandLine } from "../common/CommandLine";
+import { Reveal } from "../anim/Reveal";
+import { AsciiBar } from "../anim/AsciiBar";
 import styles from "./Skills.module.css";
 
 const COLUMNS = [
@@ -40,45 +42,32 @@ const COLUMNS = [
   },
 ] as const;
 
-const CELLS = 20;
-
-/* Static final-state bar; M3 swaps in the <AsciiBar> client leaf. Identical
- * glyph (█) for filled and rest — never mix with ░/▌, fallback fonts render
- * them at different heights (design README §Skills). */
-function Bar({ pct }: { pct: number }) {
-  const filled = Math.round(pct / 5);
-  return (
-    <span className={styles.bar} data-ascii data-pct={pct}>
-      <span className={styles.barFill}>{"█".repeat(filled)}</span>
-      <span className={styles.barRest}>{"█".repeat(CELLS - filled)}</span>
-    </span>
-  );
-}
-
 export function Skills() {
   return (
     <section id="skills" className={styles.section}>
-      <CommandLine text="ls skills/ --proficiency" className={styles.cmd} />
+      <Reveal className={styles.cmd}>
+        <CommandLine text="ls skills/ --proficiency" />
+      </Reveal>
       <div className={styles.grid}>
-        {COLUMNS.map((col) => (
-          <div key={col.header}>
+        {COLUMNS.map((col, i) => (
+          <Reveal key={col.header} delay={[0, 60, 90, 120][i]}>
             <div className={styles.colHeader}>{col.header}</div>
             <div className={styles.rows}>
               {col.rows.map((row) => (
                 <div key={row.name} className={styles.row}>
                   <span>{row.name}</span>
-                  <Bar pct={row.pct} />
+                  <AsciiBar pct={row.pct} />
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
-      <div className={styles.footer}>
+      <Reveal delay={150} className={styles.footer}>
         <span className={styles.footerAccent}>/ai-assisted-dev</span> →
         Claude/Cursor-based workflows · custom Claude skills · org-wide
         automation tooling
-      </div>
+      </Reveal>
     </section>
   );
 }

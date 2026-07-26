@@ -1,4 +1,5 @@
 import { CommandLine } from "../common/CommandLine";
+import { Reveal } from "../anim/Reveal";
 import styles from "./Work.module.css";
 
 type Job = {
@@ -72,11 +73,14 @@ const JOBS: Job[] = [
 export function Work() {
   return (
     <section id="work" className={styles.section}>
-      <CommandLine text="cat experience.log | sort -r" className={styles.cmd} />
+      <Reveal className={styles.cmd}>
+        <CommandLine text="cat experience.log | sort -r" />
+      </Reveal>
       <div className={styles.list}>
         {JOBS.map((job, i) => (
-          <div
+          <Reveal
             key={i}
+            delay={[0, 60, 90, 120][i]}
             className={job.current ? `${styles.card} ${styles.current}` : styles.card}
           >
             <div className={styles.header}>
@@ -99,7 +103,7 @@ export function Work() {
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { themeStore, resolveTheme } from "@/core/theme";
+import {
+  themeStore,
+  prefsStore,
+  resolveTheme,
+  resolveOnOff,
+  safeStorage,
+  MOTION_STORAGE_KEY,
+  SCANLINES_STORAGE_KEY,
+} from "@/core/theme";
 import { ThemeFlash } from "./ThemeFlash";
 
 /*
@@ -18,10 +26,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     themeStore.init(resolveTheme(document.documentElement.dataset.theme));
+    prefsStore.init(
+      resolveOnOff(safeStorage.get(MOTION_STORAGE_KEY)),
+      resolveOnOff(safeStorage.get(SCANLINES_STORAGE_KEY)),
+    );
 
     const unsubscribe = themeStore.subscribe(() => {
       document.documentElement.dataset.theme = themeStore.get();
       setFlashTick((t) => t + 1);
+    });
+    const unsubPrefs = prefsStore.subscribe(() => {
+      const d = document.documentElement;
+      if (prefsStore.getMotion() === "off") d.dataset.motion = "off";
+      else delete d.dataset.motion;
+      if (prefsStore.getScanlines() === "off") d.dataset.scanlines = "off";
+      else delete d.dataset.scanlines;
     });
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -43,6 +62,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       unsubscribe();
+      unsubPrefs();
       document.removeEventListener("keydown", onKeyDown);
     };
   }, []);

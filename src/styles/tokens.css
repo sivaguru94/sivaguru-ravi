@@ -29,6 +29,11 @@
    * light-theme accent is always dark accent ×0.5 per RGB channel. */
 }
 
+/* user pref (shell `scanlines off`) — stamped pre-paint by the inline script */
+:root[data-scanlines="off"] {
+  --scanlines-opacity: 0;
+}
+
 :root[data-theme="light"] {
   --bg: #f2f1ea;
   --panel: rgba(0, 0, 0, 0.025);
