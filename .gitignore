@@ -40,3 +40,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Private notes — never commit
+docs-private/
+
+# Windows/WSL zone-transfer metadata
+*Zone.Identifier

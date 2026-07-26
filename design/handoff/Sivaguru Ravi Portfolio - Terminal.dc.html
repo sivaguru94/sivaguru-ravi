@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:#050705}
+  a{color:inherit;text-decoration:none}
+  a[data-navlink]:hover{color:var(--accent,#4af07a)}
+  ::selection{background:var(--accent,#4af07a);color:#050705}
+  [data-term-root]{transition:background .4s ease,color .4s ease}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @media (min-width:761px){[data-navmenu]{display:flex !important}}
+  @media (max-width:760px){
+    nav>div{height:auto !important;flex-wrap:wrap;padding:10px 16px !important;row-gap:0 !important}
+    [data-navmenu]{display:flex !important;order:3;width:100%;overflow-x:auto;gap:16px !important;padding:8px 0 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    [data-navmenu]::-webkit-scrollbar{display:none}
+    [data-navmenu] a{padding:6px 0;white-space:nowrap}
+    [data-row]{grid-template-columns:44px 1fr minmax(80px,auto) !important;grid-template-areas:"idx name date" "idx desc desc" !important;row-gap:4px !important;padding:14px 16px !important}
+    [data-row]>span:nth-child(1){grid-area:idx}
+    [data-row]>span:nth-child(2){grid-area:name}
+    [data-row]>span:nth-child(3){grid-area:desc}
+    [data-row]>span:nth-child(4){grid-area:date}
+  }
+  @media (pointer:coarse){
+    [data-term-input],[data-term-ghost]{font-size:16px !important}
+    nav a,[data-navlink]{min-height:44px;display:inline-flex;align-items:center}
+  }
+</style>
+</helmet>
+<div data-term-root id="top" style="background:var(--bg,#050705);color:var(--fg,#e6efe6);font-family:'JetBrains Mono',monospace;min-height:100vh;overflow-x:hidden">
+
+  <div data-scanlines style="position:fixed;inset:0;z-index:60;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,0.22) 0px,rgba(0,0,0,0.22) 1px,transparent 1px,transparent 3px);opacity:0.3"></div>
+
+  <!-- NAV / TERMINAL BAR -->
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;background:var(--nav-bg,rgba(5,7,5,0.85));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line,rgba(120,255,160,0.14))">
+    <div style="max-width:1100px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <a href="#top" style="font-size:13px;font-weight:600;letter-spacing:0.02em;white-space:nowrap;display:inline-flex;align-items:center;gap:9px"><svg width="19" height="19" viewBox="0 0 64 64" aria-hidden="true" style="flex-shrink:0"><path d="M12 8C34 17 48 25 51 32C48 39 34 47 12 56L12 45C25 40.5 31 36.5 34.5 32C31 27.5 25 23.5 12 19Z" fill="var(--accent,#4af07a)"></path><rect x="13" y="26" width="13" height="12" fill="var(--accent,#4af07a)"></rect></svg><span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">shinigami-rog</span><span style="color:var(--dim,#6f7d6f)">:~$</span><span style="animation:blink 1.2s infinite">▊</span></a>
+      <div data-navmenu style="display:none;gap:22px;font-size:12px;color:var(--dim,#6f7d6f)">
+        <a data-navlink data-target="about" href="#about" style="transition:color .2s">./about</a>
+        <a data-navlink data-target="work" href="#work" style="transition:color .2s">./work</a>
+        <a data-navlink data-target="skills" href="#skills" style="transition:color .2s">./skills</a>
+        <a data-navlink data-target="ai" href="#ai" style="transition:color .2s">./ai</a>
+        <a data-navlink data-target="projects" href="#projects" style="transition:color .2s">./projects</a>
+        <a data-navlink data-target="contact" href="#contact" style="transition:color .2s">./contact</a>
+      </div>
+      <button onClick="{{ toggle }}" title="Shortcut: press T" aria-label="Toggle theme" style="background:transparent;border:1px solid var(--line,rgba(120,255,160,0.14));color:var(--fg,#e6efe6);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.06em;padding:7px 12px;border-radius:4px;cursor:pointer">[ {{ themeLabel }} ]</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header data-screen-label="Hero" style="position:relative;max-width:1100px;margin:0 auto;padding:130px 24px 70px;min-height:96vh;display:flex;flex-direction:column;justify-content:center;overflow:visible">
+    <div aria-hidden="true" style="position:absolute;right:-40px;top:50%;transform:translateY(-54%);opacity:0.05;pointer-events:none;z-index:0"><svg width="460" height="460" viewBox="0 0 64 64"><path d="M12 8C34 17 48 25 51 32C48 39 34 47 12 56L12 45C25 40.5 31 36.5 34.5 32C31 27.5 25 23.5 12 19Z" fill="#4af07a"></path><rect x="13" y="26" width="13" height="12" fill="#4af07a"></rect></svg></div>
+    <div style="font-size:14px;color:var(--dim,#6f7d6f);margin-bottom:18px" data-hero-anim><span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">$</span> <span data-type data-text="whoami --verbose">whoami --verbose</span><span data-type-cursor style="animation:blink 1s infinite;color:var(--accent,#4af07a)">▊</span></div>
+    <h1 data-hero-anim style="font-size:clamp(40px,8vw,96px);line-height:1;font-weight:800;letter-spacing:-0.04em;margin-bottom:8px;text-transform:uppercase">Sivaguru<br>Ravi<span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">_</span></h1>
+    <div data-hero-anim style="font-size:clamp(15px,2vw,19px);color:var(--accent,#4af07a);text-shadow:var(--glow,none);margin:14px 0 22px">&gt; SENIOR SDE · 9+ YRS · JAVA SPRING BOOT · ANGULAR<br>&gt; a.k.a. <span style="color:var(--fg,#e6efe6)">shinigami-rog</span> · shinigami-rog.cc</div>
+    <p data-hero-anim style="font-size:clamp(14px,1.8vw,16px);line-height:1.75;color:var(--dim,#6f7d6f);max-width:620px;text-wrap:pretty"># Architecting enterprise-grade applications for 9+ years.<br># Recognized with stock options (Nov 2025) for technical leadership.<br># Currently building the org's AI-assisted engineering playbook.</p>
+    <div data-hero-anim style="display:flex;flex-wrap:wrap;gap:12px;margin-top:34px">
+      <a href="#contact" style="display:inline-block;background:var(--accent,#4af07a);color:var(--bg,#050705);font-weight:700;font-size:14px;padding:13px 22px;border-radius:4px">./contact --now</a>
+      <a href="#work" style="display:inline-block;border:1px solid var(--line,rgba(120,255,160,0.14));color:var(--fg,#e6efe6);font-weight:500;font-size:14px;padding:13px 22px;border-radius:4px">cat experience.log</a>
+    </div>
+    <!-- STATS: terminal window -->
+    <div data-hero-anim style="margin-top:64px;border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:8px;overflow:hidden;background:var(--panel,rgba(255,255,255,0.015))">
+      <div style="padding:10px 16px;border-bottom:1px solid var(--line,rgba(120,255,160,0.14));display:flex;align-items:center;gap:12px">
+        <span style="display:flex;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></span><span style="width:10px;height:10px;border-radius:50%;background:#febc2e"></span><span style="width:10px;height:10px;border-radius:50%;background:#28c840"></span></span>
+        <span style="font-size:11px;color:var(--dim,#6f7d6f);letter-spacing:0.08em">shinigami-rog: ~/stats — $ stats --summary</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+        <div style="padding:22px 16px;border-right:1px solid var(--line,rgba(120,255,160,0.14))"><div style="font-size:clamp(28px,3.5vw,40px);font-weight:800;color:var(--accent,#4af07a);text-shadow:var(--glow,none)"><span data-count data-to="9" data-suffix="+">9+</span></div><div style="font-size:11px;color:var(--dim,#6f7d6f);margin-top:6px;letter-spacing:0.06em">YRS_EXPERIENCE</div></div>
+        <div style="padding:22px 16px;border-right:1px solid var(--line,rgba(120,255,160,0.14))"><div style="font-size:clamp(28px,3.5vw,40px);font-weight:800;color:var(--accent,#4af07a);text-shadow:var(--glow,none)"><span data-count data-to="50" data-suffix="+">50+</span></div><div style="font-size:11px;color:var(--dim,#6f7d6f);margin-top:6px;letter-spacing:0.06em">ENGINEERS_MENTORED</div></div>
+        <div style="padding:22px 16px;border-right:1px solid var(--line,rgba(120,255,160,0.14))"><div style="font-size:clamp(28px,3.5vw,40px);font-weight:800;color:var(--accent,#4af07a);text-shadow:var(--glow,none)"><span data-count data-to="70" data-suffix="%">70%</span></div><div style="font-size:11px;color:var(--dim,#6f7d6f);margin-top:6px;letter-spacing:0.06em">FASTER_BUILDS</div></div>
+        <div style="padding:22px 16px"><div style="font-size:clamp(28px,3.5vw,40px);font-weight:800;color:var(--accent,#4af07a);text-shadow:var(--glow,none)"><span data-count data-to="8" data-suffix="">8</span></div><div style="font-size:11px;color:var(--dim,#6f7d6f);margin-top:6px;letter-spacing:0.06em">SECURITY_TOOLS</div></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" data-screen-label="About" style="scroll-margin-top:72px;max-width:1100px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--line,rgba(120,255,160,0.14))">
+    <div style="font-size:14px;color:var(--dim,#6f7d6f);margin-bottom:28px" data-reveal><span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">$</span> <span data-cmd data-text="cat about.md">cat about.md</span><span data-cmd-cursor style="animation:blink 1s infinite;color:var(--accent,#4af07a)">▊</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px">
+      <h2 style="font-size:clamp(24px,3.5vw,36px);font-weight:700;letter-spacing:-0.02em;line-height:1.2" data-reveal>Nine years of shipping systems people rely on.</h2>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <p style="font-size:15px;line-height:1.75;color:var(--fg,#e6efe6)" data-reveal>9+ years architecting enterprise-grade applications, specialized in <b style="color:var(--accent,#4af07a)">Java Spring Boot</b> and <b style="color:var(--accent,#4af07a)">Angular</b>. Backend microservices, security frameworks, healthcare products, next-generation UI platforms.</p>
+        <p style="font-size:14px;line-height:1.75;color:var(--dim,#6f7d6f)" data-reveal data-delay="80">Recognized with stock options in November 2025 for exceptional technical leadership. B.Tech Computer Science, Mahatma Gandhi University. Based in Bangalore, India.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work" data-screen-label="Experience" style="scroll-margin-top:72px;max-width:1100px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--line,rgba(120,255,160,0.14))">
+    <div style="font-size:14px;color:var(--dim,#6f7d6f);margin-bottom:40px" data-reveal><span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">$</span> <span data-cmd data-text="cat experience.log | sort -r">cat experience.log | sort -r</span><span data-cmd-cursor style="animation:blink 1s infinite;color:var(--accent,#4af07a)">▊</span></div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="background:var(--panel,rgba(255,255,255,0.015));border:1px solid var(--line,rgba(120,255,160,0.14));border-left:3px solid var(--accent,#4af07a);border-radius:4px;padding:24px" data-reveal>
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-bottom:6px"><h3 style="font-size:18px;font-weight:700">Infrrd Inc <span style="color:var(--accent,#4af07a);font-weight:500;font-size:14px">· TECHNICAL_SPECIALIST</span></h3><span style="font-size:12px;color:var(--dim,#6f7d6f)">[2023-08 → PRESENT]</span></div>
+        <div style="font-size:12px;color:var(--dim,#6f7d6f);margin-bottom:14px">Bangalore, India</div>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:14px;line-height:1.6">
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Awarded <b>stock options (Nov 2025)</b> for technical leadership</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Built OSS security framework integrating <b>8 security tools</b></span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Led <b>Annie UI</b> platform on Angular 16</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Cut build time <b>70%</b> (20–30 min → &lt;10 min) · mentored junior devs</span></div>
+        </div>
+      </div>
+
+      <div style="background:var(--panel,rgba(255,255,255,0.015));border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;padding:24px" data-reveal data-delay="60">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-bottom:6px"><h3 style="font-size:18px;font-weight:700">Philips India <span style="color:var(--dim,#6f7d6f);font-weight:500;font-size:14px">· SOFTWARE_TECHNOLOGIST_1</span></h3><span style="font-size:12px;color:var(--dim,#6f7d6f)">[2021-12 → 2023-07]</span></div>
+        <div style="font-size:12px;color:var(--dim,#6f7d6f);margin-bottom:14px">Bangalore, India</div>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:14px;line-height:1.6">
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Healthcare product development</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Role-based API security implementation</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Azure Pipelines automation · test suite development</span></div>
+        </div>
+      </div>
+
+      <div style="background:var(--panel,rgba(255,255,255,0.015));border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;padding:24px" data-reveal data-delay="90">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-bottom:6px"><h3 style="font-size:18px;font-weight:700">Infrrd Inc <span style="color:var(--dim,#6f7d6f);font-weight:500;font-size:14px">· SENIOR_SOFTWARE_ENGINEER</span></h3><span style="font-size:12px;color:var(--dim,#6f7d6f)">[2020-05 → 2021-11]</span></div>
+        <div style="font-size:12px;color:var(--dim,#6f7d6f);margin-bottom:14px">Bangalore, India</div>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:14px;line-height:1.6">
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Python SDK for AWS automation — <b>60% efficiency gain</b></span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Third-party API integration · image processing SDK</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Document processing improvements</span></div>
+        </div>
+      </div>
+
+      <div style="background:var(--panel,rgba(255,255,255,0.015));border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;padding:24px" data-reveal data-delay="120">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-bottom:6px"><h3 style="font-size:18px;font-weight:700">Mindtree Pvt Ltd <span style="color:var(--dim,#6f7d6f);font-weight:500;font-size:14px">· SENIOR_SOFTWARE_ENGINEER</span></h3><span style="font-size:12px;color:var(--dim,#6f7d6f)">[2017-01 → 2019-10]</span></div>
+        <div style="font-size:12px;color:var(--dim,#6f7d6f);margin-bottom:14px">Bangalore, India</div>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:14px;line-height:1.6">
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Built <b>3D Canvas UI for Bose VB1</b> (Angular 8, Electron)</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>Mentored <b>50+ engineers</b> · technical architecture leadership</span></div>
+          <div style="display:flex;gap:10px"><span style="color:var(--accent,#4af07a)">&gt;</span><span>BLE Mesh development for indoor localization</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" data-screen-label="Skills" style="scroll-margin-top:72px;max-width:1100px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--line,rgba(120,255,160,0.14))">
+    <div style="font-size:14px;color:var(--dim,#6f7d6f);margin-bottom:40px" data-reveal><span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">$</span> <span data-cmd data-text="ls skills/ --proficiency">ls skills/ --proficiency</span><span data-cmd-cursor style="animation:blink 1s infinite;color:var(--accent,#4af07a)">▊</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:36px 48px">
+
+      <div data-reveal>
+        <div style="font-size:12px;letter-spacing:0.1em;color:var(--accent,#4af07a);margin-bottom:18px">/backend</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px">
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>Java &amp; Spring Boot</span><span data-ascii data-pct="95" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">███████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">█</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>RESTful APIs</span><span data-ascii data-pct="95" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">███████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">█</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>Microservices</span><span data-ascii data-pct="90" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>Node.js &amp; Python</span><span data-ascii data-pct="85" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">█████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">███</span></span></div>
+        </div>
+      </div>
+
+      <div data-reveal data-delay="60">
+        <div style="font-size:12px;letter-spacing:0.1em;color:var(--accent,#4af07a);margin-bottom:18px">/frontend</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px">
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>Angular 2–16</span><span data-ascii data-pct="95" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">███████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">█</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>RxJS</span><span data-ascii data-pct="90" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>React &amp; TypeScript</span><span data-ascii data-pct="88" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>UI/UX Optimization</span><span data-ascii data-pct="85" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">█████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">███</span></span></div>
+        </div>
+      </div>
+
+      <div data-reveal data-delay="90">
+        <div style="font-size:12px;letter-spacing:0.1em;color:var(--accent,#4af07a);margin-bottom:18px">/cloud-devops</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px">
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>Build Optimization</span><span data-ascii data-pct="92" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>Azure DevOps</span><span data-ascii data-pct="90" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>Docker &amp; CI/CD</span><span data-ascii data-pct="88" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>AWS</span><span data-ascii data-pct="85" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">█████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">███</span></span></div>
+        </div>
+      </div>
+
+      <div data-reveal data-delay="120">
+        <div style="font-size:12px;letter-spacing:0.1em;color:var(--accent,#4af07a);margin-bottom:18px">/security</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px">
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>OSS Vulnerability</span><span data-ascii data-pct="90" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>Security Remediation</span><span data-ascii data-pct="90" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>License Compliance</span><span data-ascii data-pct="88" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">██████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">██</span></span></div>
+          <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px"><span>OWASP</span><span data-ascii data-pct="85" style="white-space:nowrap;font-size:11px;line-height:1;letter-spacing:0.5px"><span data-bar-fill style="color:var(--accent,#4af07a)">█████████████████</span><span data-bar-rest style="color:var(--dim,#6f7d6f);opacity:0.3">███</span></span></div>
+        </div>
+      </div>
+
+    </div>
+    <div style="margin-top:44px;padding-top:24px;border-top:1px dashed var(--line,rgba(120,255,160,0.14));font-size:13px;color:var(--dim,#6f7d6f);line-height:1.7" data-reveal data-delay="150"><span style="color:var(--accent,#4af07a)">/ai-assisted-dev</span> → Claude/Cursor-based workflows · custom Claude skills · org-wide automation tooling</div>
+  </section>
+
+  <!-- AI LEADERSHIP -->
+  <section id="ai" data-screen-label="AI Leadership" style="scroll-margin-top:72px;border-top:1px solid var(--line,rgba(120,255,160,0.14));background:var(--accent-soft,rgba(74,240,122,0.06))">
+    <div style="max-width:1100px;margin:0 auto;padding:88px 24px">
+      <div style="font-size:14px;color:var(--dim,#6f7d6f);margin-bottom:24px;display:flex;align-items:center;flex-wrap:wrap;gap:2px" data-reveal><span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">$</span>&nbsp;<span data-cmd data-text="./ai-leadership --status">./ai-leadership --status</span><span data-cmd-cursor style="animation:blink 1s infinite;color:var(--accent,#4af07a)">▊</span><span style="color:var(--accent,#4af07a);border:1px solid var(--accent,#4af07a);border-radius:3px;padding:2px 8px;font-size:11px;margin-left:12px">AI-NATIVE</span></div>
+      <h2 style="font-size:clamp(28px,4.5vw,52px);font-weight:800;letter-spacing:-0.03em;line-height:1.05;max-width:820px;margin-bottom:18px" data-reveal>AI-ASSISTED ENGINEERING LEADERSHIP</h2>
+      <p style="font-size:15px;line-height:1.7;color:var(--dim,#6f7d6f);max-width:640px;margin-bottom:44px" data-reveal data-delay="60"># Driving Claude &amp; AI automation adoption across the org —<br># turning individual workflows into reusable engineering leverage.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
+        <div style="background:var(--bg,#050705);border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;padding:24px;transition:border-color .2s,transform .2s" data-reveal data-card>
+          <div style="font-size:12px;color:var(--accent,#4af07a);margin-bottom:12px">[skill] pr-review-council</div>
+          <p style="font-size:14px;line-height:1.6;color:var(--fg,#e6efe6)">Multi-perspective automated review on every pull request, org-wide.</p>
+        </div>
+        <div style="background:var(--bg,#050705);border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;padding:24px;transition:border-color .2s,transform .2s" data-reveal data-delay="60" data-card>
+          <div style="font-size:12px;color:var(--accent,#4af07a);margin-bottom:12px">[skill] epic-delivery</div>
+          <p style="font-size:14px;line-height:1.6;color:var(--fg,#e6efe6)">Takes an epic from breakdown through delivery with AI in the loop.</p>
+        </div>
+        <div style="background:var(--bg,#050705);border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;padding:24px;transition:border-color .2s,transform .2s" data-reveal data-delay="120" data-card>
+          <div style="font-size:12px;color:var(--accent,#4af07a);margin-bottom:12px">[skill] worktree</div>
+          <p style="font-size:14px;line-height:1.6;color:var(--fg,#e6efe6)">Parallel JIRA deliveries without branch collisions.</p>
+        </div>
+        <div style="background:var(--bg,#050705);border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;padding:24px;transition:border-color .2s,transform .2s" data-reveal data-delay="180" data-card>
+          <div style="font-size:12px;color:var(--accent,#4af07a);margin-bottom:12px">[skill] time-log</div>
+          <p style="font-size:14px;line-height:1.6;color:var(--fg,#e6efe6)">Automates time-log capture end to end. Zero manual overhead.</p>
+        </div>
+        <div style="grid-column:1/-1;background:var(--bg,#050705);border:1px solid var(--accent,#4af07a);border-radius:4px;padding:26px" data-reveal data-delay="240">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent,#4af07a);animation:blink 1.3s infinite"></span><span style="font-size:11px;letter-spacing:0.12em;color:var(--accent,#4af07a)">PROCESS RUNNING · IN PROGRESS</span></div>
+          <h3 style="font-size:clamp(18px,2.5vw,24px);font-weight:700;margin-bottom:8px">org-level project-wide memory system for Claude</h3>
+          <p style="font-size:14px;line-height:1.6;color:var(--dim,#6f7d6f)">A shared memory layer so AI carries context across projects and teams.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" data-screen-label="Projects" style="scroll-margin-top:72px;max-width:1100px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--line,rgba(120,255,160,0.14))">
+    <div style="font-size:14px;color:var(--dim,#6f7d6f);margin-bottom:36px" data-reveal><span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">$</span> <span data-cmd data-text="ls -la projects/">ls -la projects/</span><span data-cmd-cursor style="animation:blink 1s infinite;color:var(--accent,#4af07a)">▊</span></div>
+    <div style="border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:6px;overflow:hidden;background:var(--panel,rgba(255,255,255,0.015))">
+
+      <div style="display:grid;grid-template-columns:52px minmax(180px,1.1fr) 2fr minmax(110px,auto);gap:14px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line,rgba(120,255,160,0.14));transition:background .2s" data-reveal data-row>
+        <span style="font-size:12px;color:var(--dim,#6f7d6f)">001</span>
+        <span style="font-size:15px;font-weight:700">annie-ui-platform</span>
+        <span style="font-size:13px;color:var(--dim,#6f7d6f)">Next-gen UI platform · Angular 16, TypeScript, RxJS, Spring Boot</span>
+        <span style="font-size:11px;color:var(--accent,#4af07a);text-align:right">2023—NOW</span>
+      </div>
+      <div style="display:grid;grid-template-columns:52px minmax(180px,1.1fr) 2fr minmax(110px,auto);gap:14px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line,rgba(120,255,160,0.14));transition:background .2s" data-reveal data-row>
+        <span style="font-size:12px;color:var(--dim,#6f7d6f)">002</span>
+        <span style="font-size:15px;font-weight:700">security-framework</span>
+        <span style="font-size:13px;color:var(--dim,#6f7d6f)">8 integrated tools · OWASP, Semgrep, TruffleHog, Snyk, SonarQube</span>
+        <span style="font-size:11px;color:var(--accent,#4af07a);text-align:right">2023—2024</span>
+      </div>
+      <div style="display:grid;grid-template-columns:52px minmax(180px,1.1fr) 2fr minmax(110px,auto);gap:14px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line,rgba(120,255,160,0.14));transition:background .2s" data-reveal data-row>
+        <span style="font-size:12px;color:var(--dim,#6f7d6f)">003</span>
+        <span style="font-size:15px;font-weight:700">build-optimization</span>
+        <span style="font-size:13px;color:var(--dim,#6f7d6f)">70% faster builds · 20–30 min → &lt;10 min</span>
+        <span style="font-size:11px;color:var(--accent,#4af07a);text-align:right">2023</span>
+      </div>
+      <div style="display:grid;grid-template-columns:52px minmax(180px,1.1fr) 2fr minmax(110px,auto);gap:14px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line,rgba(120,255,160,0.14));transition:background .2s" data-reveal data-row>
+        <span style="font-size:12px;color:var(--dim,#6f7d6f)">004</span>
+        <span style="font-size:15px;font-weight:700">failed-page-handler</span>
+        <span style="font-size:13px;color:var(--dim,#6f7d6f)">Document processing with failure recovery · Java, Spring Boot, Angular</span>
+        <span style="font-size:11px;color:var(--accent,#4af07a);text-align:right">2023</span>
+      </div>
+      <div style="display:grid;grid-template-columns:52px minmax(180px,1.1fr) 2fr minmax(110px,auto);gap:14px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line,rgba(120,255,160,0.14));transition:background .2s" data-reveal data-row>
+        <span style="font-size:12px;color:var(--dim,#6f7d6f)">005</span>
+        <span style="font-size:15px;font-weight:700">angular-modernization</span>
+        <span style="font-size:13px;color:var(--dim,#6f7d6f)">Angular 8 → 14 migration · zero downtime, backward compatible</span>
+        <span style="font-size:11px;color:var(--accent,#4af07a);text-align:right">2022—2023</span>
+      </div>
+      <div style="display:grid;grid-template-columns:52px minmax(180px,1.1fr) 2fr minmax(110px,auto);gap:14px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line,rgba(120,255,160,0.14));transition:background .2s" data-reveal data-row>
+        <span style="font-size:12px;color:var(--dim,#6f7d6f)">006</span>
+        <span style="font-size:15px;font-weight:700">aws-automation-sdk</span>
+        <span style="font-size:13px;color:var(--dim,#6f7d6f)">Python + Boto3 · 60% manual work reduction</span>
+        <span style="font-size:11px;color:var(--accent,#4af07a);text-align:right">2020—2021</span>
+      </div>
+      <div style="display:grid;grid-template-columns:52px minmax(180px,1.1fr) 2fr minmax(110px,auto);gap:14px;align-items:center;padding:18px 20px;background:var(--accent-soft,rgba(74,240,122,0.06));transition:background .2s" data-reveal data-row>
+        <span style="font-size:12px;color:var(--accent,#4af07a)">007</span>
+        <span style="font-size:15px;font-weight:700;color:var(--accent,#4af07a)">claude-automation-skills</span>
+        <span style="font-size:13px;color:var(--dim,#6f7d6f)">PR review council, epic delivery, worktrees, time-log + org memory system (WIP)</span>
+        <span style="font-size:11px;color:var(--accent,#4af07a);text-align:right">ONGOING</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" data-screen-label="Contact" style="scroll-margin-top:72px;border-top:1px solid var(--line,rgba(120,255,160,0.14))">
+    <div style="max-width:1100px;margin:0 auto;padding:90px 24px 80px">
+      <div style="font-size:14px;color:var(--dim,#6f7d6f);margin-bottom:24px" data-reveal><span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none)">$</span> <span data-cmd data-text="ping shinigami-rog --all-channels">ping shinigami-rog --all-channels</span><span data-cmd-cursor style="animation:blink 1s infinite;color:var(--accent,#4af07a)">▊</span></div>
+      <h2 style="font-size:clamp(32px,6vw,72px);font-weight:800;letter-spacing:-0.04em;line-height:1;margin-bottom:36px;text-transform:uppercase" data-reveal>Let's build<br>something<span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none);animation:blink 1.2s infinite">_</span></h2>
+      <div style="display:flex;flex-direction:column;gap:2px;font-size:15px;max-width:640px" data-reveal data-delay="80">
+        <a href="mailto:sivaguru94@gmail.com" style="display:flex;flex-wrap:wrap;gap:12px;padding:14px 16px;border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;transition:border-color .2s,background .2s" data-contact><span style="color:var(--dim,#6f7d6f);min-width:90px">EMAIL</span><span style="color:var(--accent,#4af07a)">sivaguru94@gmail.com</span></a>
+        <a href="tel:+919020708677" style="display:flex;flex-wrap:wrap;gap:12px;padding:14px 16px;border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;transition:border-color .2s,background .2s" data-contact><span style="color:var(--dim,#6f7d6f);min-width:90px">PHONE</span><span>+91 90207 08677</span></a>
+        <a href="https://www.linkedin.com/in/sivaguru-ravi/" target="_blank" rel="noopener" style="display:flex;flex-wrap:wrap;gap:12px;padding:14px 16px;border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;transition:border-color .2s,background .2s" data-contact><span style="color:var(--dim,#6f7d6f);min-width:90px">LINKEDIN</span><span style="color:var(--accent,#4af07a)">/in/sivaguru-ravi ↗</span></a>
+        <a href="https://shinigami-rog.cc" target="_blank" rel="noopener" style="display:flex;flex-wrap:wrap;gap:12px;padding:14px 16px;border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px;transition:border-color .2s,background .2s" data-contact><span style="color:var(--dim,#6f7d6f);min-width:90px">WEB</span><span style="color:var(--accent,#4af07a)">shinigami-rog.cc ↗</span></a>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;padding:14px 16px;border:1px solid var(--line,rgba(120,255,160,0.14));border-radius:4px"><span style="color:var(--dim,#6f7d6f);min-width:90px">LOCATION</span><span>Bangalore, India</span></div>
+      </div>
+
+      <button onClick="{{ openTerm }}" style="margin-top:40px;display:inline-flex;align-items:center;gap:10px;background:transparent;border:1px solid var(--line,rgba(120,255,160,0.14));color:var(--dim,#6f7d6f);font-family:'JetBrains Mono',monospace;font-size:13px;padding:12px 18px;border-radius:4px;cursor:pointer;transition:border-color .2s,color .2s" style-hover="border-color:var(--accent,#4af07a);color:var(--accent,#4af07a)" data-reveal data-delay="120"><span style="color:var(--accent,#4af07a)">&gt;_</span> open interactive shell</button>
+    </div>
+    <footer style="border-top:1px solid var(--line,rgba(120,255,160,0.14))">
+      <div style="max-width:1100px;margin:0 auto;padding:24px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:11.5px;color:var(--dim,#6f7d6f)">
+        <span style="display:inline-flex;align-items:center;gap:8px"><svg width="14" height="14" viewBox="0 0 64 64" aria-hidden="true" style="flex-shrink:0"><path d="M12 8C34 17 48 25 51 32C48 39 34 47 12 56L12 45C25 40.5 31 36.5 34.5 32C31 27.5 25 23.5 12 19Z" fill="var(--dim,#6f7d6f)"></path><rect x="13" y="26" width="13" height="12" fill="var(--dim,#6f7d6f)"></rect></svg>© 2026 SIVAGURU_RAVI · shinigami-rog · uptime 9y+ · exit 0</span>
+        <span style="display:flex;gap:18px;flex-wrap:wrap"><span>[T] toggle theme</span><a href="Sivaguru Ravi Portfolio.dc.html" style="color:var(--accent,#4af07a)">view modern variant →</a></span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- FLOATING SHELL -->
+  <sc-if value="{{ termOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-term-win style="{{ termWinStyle }}">
+      <div onClick="{{ toggleTermMin }}" onPointerDown="{{ onHeadDown }}" style="padding:10px 16px;border-bottom:1px solid var(--line,rgba(120,255,160,0.14));display:flex;align-items:center;gap:12px;cursor:move;background:var(--panel,rgba(255,255,255,0.015));user-select:none;flex-shrink:0;touch-action:none">
+        <span style="display:flex;gap:6px">
+          <button onClick="{{ closeTerm }}" aria-label="Close shell" style="width:14px;height:14px;border-radius:50%;background:#ff5f57;border:none;cursor:pointer;padding:0"></button>
+          <button onClick="{{ minTerm }}" aria-label="Minimize shell" style="width:14px;height:14px;border-radius:50%;background:#febc2e;border:none;cursor:pointer;padding:0"></button>
+          <button onClick="{{ maxTerm }}" aria-label="Maximize shell" style="width:14px;height:14px;border-radius:50%;background:#28c840;border:none;cursor:pointer;padding:0"></button>
+        </span>
+        <svg width="13" height="13" viewBox="0 0 64 64" aria-hidden="true" style="flex-shrink:0"><path d="M46 6C24 5 8 16 4 34C13 21 27 17 46 20Z" fill="var(--dim,#6f7d6f)"></path><rect x="37" y="6" width="9" height="52" fill="var(--dim,#6f7d6f)"></rect></svg><span style="font-size:11px;color:var(--dim,#6f7d6f);letter-spacing:0.08em">guest@shinigami-rog — interactive shell — try `help`</span>
+      </div>
+      <sc-if value="{{ termExpanded }}" hint-placeholder-val="{{ false }}">
+        <div data-term-body onClick="{{ focusInput }}" style="padding:16px;height:280px;flex:1;min-height:0;overflow-y:auto;cursor:text;display:flex;flex-direction:column;gap:4px;font-size:13.5px;line-height:1.6">
+          <sc-for list="{{ termLines }}" as="line" hint-placeholder-count="1">
+            <div style="white-space:pre-wrap;word-break:break-word;color:{{ line.color }}">{{ line.text }}</div>
+          </sc-for>
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span style="color:var(--accent,#4af07a);text-shadow:var(--glow,none);white-space:nowrap">guest@shinigami-rog:~$</span>
+            <span style="flex:1;min-width:80px;position:relative;display:flex">
+              <span aria-hidden="true" data-term-ghost style="position:absolute;inset:0;pointer-events:none;white-space:pre;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:inherit"><span style="visibility:hidden">{{ termValue }}</span><span style="color:var(--dim,#6f7d6f);opacity:0.55">{{ termGhost }}</span></span>
+              <input data-term-input value="{{ termValue }}" onChange="{{ onTermChange }}" onKeyDown="{{ onTermKey }}" spellCheck="false" autoComplete="off" aria-label="Terminal command input" style="flex:1;width:100%;background:transparent;border:none;outline:none;color:var(--fg,#e6efe6);font-family:'JetBrains Mono',monospace;font-size:13.5px;caret-color:var(--accent,#4af07a)" />
+            </span>
+          </div>
+        </div>
+        <div onPointerDown="{{ onResizeDown }}" aria-hidden="true" style="position:absolute;right:0;bottom:0;width:28px;height:28px;cursor:nwse-resize;color:var(--dim,#6f7d6f);font-size:11px;line-height:28px;text-align:center;user-select:none;opacity:0.7;touch-action:none">◢</div>
+      </sc-if>
+    </div>
+  </sc-if>
+  <sc-if value="{{ termClosed }}" hint-placeholder-val="{{ true }}">
+    <button onClick="{{ openTerm }}" aria-label="Open interactive shell" style="position:fixed;bottom:20px;right:20px;z-index:70;display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:8px;background:var(--bg,#050705);border:1px solid var(--line,rgba(120,255,160,0.14));color:var(--accent,#4af07a);text-shadow:var(--glow,none);font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 12px 32px rgba(0,0,0,0.45);transition:border-color .2s,transform .2s" style-hover="border-color:var(--accent,#4af07a);transform:translateY(-2px)">&gt;_</button>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:820},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4af07a&quot;,&quot;options&quot;:[&quot;#4af07a&quot;,&quot;#ffb347&quot;,&quot;#5ad7ff&quot;,&quot;#e6efe6&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;scanlines&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Effects&quot;},&quot;glow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Effects&quot;},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  state = { theme: this.props.theme || 'dark', termValue: '', termLines: [
+    { text: 'sivaguru-shell v1.0 — type `help` to see available commands · tab to autocomplete', dim: true }
+  ], histIdx: -1, termOpen: false, termMin: false, termMax: false, termPos: null, termSize: null };
+  history = [];
+
+  openTerm = (e) => {
+    if (e) e.stopPropagation();
+    this.setState({ termOpen: true, termMin: false }, () => this.focusInput());
+  };
+  closeTerm = (e) => { if (e) e.stopPropagation(); this.setState({ termOpen: false }); };
+  minTerm = (e) => { if (e) e.stopPropagation(); this.setState({ termMin: true }); };
+  maxTerm = (e) => { if (e) e.stopPropagation(); this.setState(s => ({ termMax: !s.termMax, termMin: false }), () => this.focusInput()); };
+  toggleTermMin = () => {
+    if (this.dragging) { this.dragging = false; return; }
+    this.setState(s => ({ termMin: !s.termMin }), () => { if (!this.state.termMin) this.focusInput(); });
+  };
+
+  termWin() { return document.querySelector('[data-term-win]'); }
+
+  termWinStyle() {
+    const s = { position: 'fixed', zIndex: 70, display: 'flex', flexDirection: 'column',
+      border: '1px solid var(--line,rgba(120,255,160,0.14))', borderRadius: '10px', overflow: 'hidden',
+      background: 'var(--bg,#050705)', boxShadow: '0 24px 64px rgba(0,0,0,0.55)' };
+    if (this.state.termMin) return Object.assign(s, { bottom: '20px', right: '20px', width: 'min(540px, calc(100vw - 32px))' });
+    if (this.state.termMax) return Object.assign(s, { left: '16px', top: '16px', right: '16px', bottom: '16px', width: 'auto', height: 'auto' });
+    if (this.state.termPos) { s.left = this.state.termPos.x + 'px'; s.top = this.state.termPos.y + 'px'; }
+    else { s.bottom = '20px'; s.right = '20px'; }
+    s.width = this.state.termSize ? this.state.termSize.w + 'px' : 'min(540px, calc(100vw - 32px))';
+    s.height = this.state.termSize ? this.state.termSize.h + 'px' : '340px';
+    return s;
+  }
+
+  onHeadDown = (e) => {
+    if (e.target.tagName === 'BUTTON' || this.state.termMax || this.state.termMin) return;
+    const win = this.termWin(); if (!win) return;
+    const r = win.getBoundingClientRect();
+    const off = { x: e.clientX - r.left, y: e.clientY - r.top };
+    this.dragging = false;
+    const MIN_W = 340, MIN_H = 180;
+    let pos = null, size = null;
+    const move = (ev) => {
+      this.dragging = true;
+      pos = {
+        x: Math.min(Math.max(0, ev.clientX - off.x), window.innerWidth - MIN_W - 8),
+        y: Math.min(Math.max(0, ev.clientY - off.y), window.innerHeight - MIN_H - 8),
+      };
+      // shrink window if it would overflow right/bottom edge
+      size = {
+        w: Math.max(MIN_W, Math.min(r.width, window.innerWidth - pos.x - 8)),
+        h: Math.max(MIN_H, Math.min(r.height, window.innerHeight - pos.y - 8)),
+      };
+      win.style.left = pos.x + 'px'; win.style.top = pos.y + 'px';
+      win.style.right = 'auto'; win.style.bottom = 'auto';
+      win.style.width = size.w + 'px'; win.style.height = size.h + 'px';
+    };
+    const up = () => {
+      document.removeEventListener('pointermove', move);
+      document.removeEventListener('pointerup', up);
+      document.removeEventListener('pointercancel', up);
+      if (pos) this.setState({ termPos: pos, termSize: size });
+      setTimeout(() => { this.dragging = false; }, 0);
+    };
+    document.addEventListener('pointermove', move);
+    document.addEventListener('pointerup', up);
+    document.addEventListener('pointercancel', up);
+    e.preventDefault();
+  };
+
+  onResizeDown = (e) => {
+    if (this.state.termMax) return;
+    const win = this.termWin(); if (!win) return;
+    const r = win.getBoundingClientRect();
+    const pin = { x: r.left, y: r.top };
+    win.style.left = pin.x + 'px'; win.style.top = pin.y + 'px';
+    win.style.right = 'auto'; win.style.bottom = 'auto';
+    const start = { x: e.clientX, y: e.clientY, w: r.width, h: r.height };
+    let size = null;
+    const move = (ev) => {
+      size = {
+        w: Math.min(Math.max(340, start.w + ev.clientX - start.x), window.innerWidth - pin.x - 8),
+        h: Math.min(Math.max(180, start.h + ev.clientY - start.y), window.innerHeight - pin.y - 8),
+      };
+      win.style.width = size.w + 'px'; win.style.height = size.h + 'px';
+    };
+    const up = () => {
+      document.removeEventListener('pointermove', move);
+      document.removeEventListener('pointerup', up);
+      document.removeEventListener('pointercancel', up);
+      const st = { termPos: pin };
+      if (size) st.termSize = size;
+      this.setState(st);
+    };
+    document.addEventListener('pointermove', move);
+    document.addEventListener('pointerup', up);
+    document.addEventListener('pointercancel', up);
+    e.preventDefault(); e.stopPropagation();
+  };
+
+  commands = {
+    help: () => [
+      'available commands:',
+      '  whoami       who is this guy',
+      '  skills       top skills',
+      '  experience   work history',
+      '  projects     featured projects',
+      '  ai           AI-assisted engineering work',
+      '  contact      how to reach me',
+      '  resume       download resume (PDF)',
+      '  stock        the november 2025 story',
+      '  theme        toggle dark/light',
+      '  clear        clear the terminal',
+      '',
+      'unix works too: ls · cat <file> · cd <section> · man <cmd> · pwd · history',
+      '',
+      'psst — not everything is listed here. `ls -a` sees more than `ls`.',
+    ],
+    whoami: () => [
+      'Sivaguru Ravi — Senior SDE, Bangalore, India',
+      'alias: shinigami-rog  ·  web: shinigami-rog.cc',
+      '9+ years architecting enterprise-grade applications.',
+      'Java Spring Boot · Angular · AI-assisted engineering.',
+    ],
+    skills: () => [
+      'java-spring-boot ██████████ 95',
+      'angular-2-16     ██████████ 95',
+      'restful-apis     ██████████ 95',
+      'build-optim      █████████░ 92',
+      'microservices    █████████░ 90',
+      'rxjs             █████████░ 90',
+      '…full list at ./skills — scroll up',
+    ],
+    experience: () => [
+      '[2023-08 → NOW ] Infrrd Inc — Technical Specialist',
+      '[2021-12 → 2023] Philips India — Software Technologist 1',
+      '[2020-05 → 2021] Infrrd Inc — Senior Software Engineer',
+      '[2017-01 → 2019] Mindtree — Senior Software Engineer',
+    ],
+    projects: () => [
+      'annie-ui-platform      2023—NOW',
+      'security-framework     2023—2024 (8 tools)',
+      'build-optimization     2023 (70% faster)',
+      'angular-modernization  2022—2023 (zero downtime)',
+      'aws-automation-sdk     2020—2021 (60% less manual work)',
+      'claude-automation-skills  ONGOING',
+    ],
+    ai: () => [
+      'org-wide Claude skills:',
+      '  pr-review-council · epic-delivery · worktree · time-log',
+      'in progress: org-level project-wide memory system for Claude',
+    ],
+    contact: () => [
+      'email     sivaguru94@gmail.com',
+      'web       shinigami-rog.cc',
+      'phone     +91 90207 08677',
+      'linkedin  linkedin.com/in/sivaguru-ravi',
+      'location  Bangalore, India',
+    ],
+    stock: () => [
+      'november 2025: awarded stock options for exceptional',
+      'technical leadership at Infrrd. still compiling. 🟢',
+    ],
+    snake: () => {
+      this.startSnake();
+      return ['loading snake.exe… arrows/wasd to move, esc to quit.'];
+    },
+    logo: () => [
+      '      ▄▄▄▄▄▄▄▄▄▄▄██',
+      '   ▄██████████████▀',
+      '  ▀▀▀▀▀▀▀▀    ██',
+      '              ██',
+      '              ██   shinigami-rog',
+      '              ██   the caret is the scythe',
+      '              ██',
+    ],
+    matrix: () => {
+      this.startMatrix();
+      return ['wake up, neo…', 'the matrix has you. press any key to exit.'];
+    },
+    resume: () => {
+      const a = document.createElement('a');
+      a.href = 'uploads/Sivaguru_Ravi_Resume.pdf';
+      a.download = 'Sivaguru_Ravi_Resume.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+      return ['fetching resume… download started ✓', 'file: Sivaguru_Ravi_Resume.pdf'];
+    },
+    ls: (args) => (args && args[0] === '-a')
+      ? ['.  ..  .secrets  about.md  experience.log  skills/  projects/  ai/  contact.txt  resume.pdf']
+      : ['about.md  experience.log  skills/  projects/  ai/  contact.txt  resume.pdf'],
+    exit: () => ['there is no escape. try `contact` instead.'],
+    sudo: () => ['nice try. permission denied.'],
+    pwd: () => ['/home/guest/shinigami-rog'],
+    date: () => [new Date().toString()],
+    uname: () => ['shinigami-rog 9.2.0-lts #built-with-java-and-angular SMP x86_64 GNU/Linux'],
+    echo: (args) => [args.join(' ')],
+    history: function(args) { return this.history.length ? this.history.map((h, i) => '  ' + (i + 1) + '  ' + h) : ['(empty)']; },
+    cat: function(args) {
+      if (!args.length) return ['usage: cat <file> — try `ls` to see files'];
+      const f = args[0].toLowerCase().replace(/\/$/, '');
+      if (f === '.secrets') return [
+        '# .secrets — you found me. three doors remain:',
+        '  1. follow the white rabbit — the movie knows the command.',
+        '  2. an old nokia game lives here. it hisses.',
+        '  3. ask for more power than you deserve.',
+      ];
+      const map = { 'me': 'whoami', 'about': 'whoami', 'about.md': 'whoami', 'experience.log': 'experience', 'experience': 'experience', 'skills': 'skills', 'projects': 'projects', 'ai': 'ai', 'contact.txt': 'contact', 'contact': 'contact' };
+      if (f === 'resume.pdf' || f === 'resume') return this.commands.resume.call(this);
+      if (map[f]) return this.commands[map[f]].call(this);
+      return ['cat: ' + args[0] + ': No such file or directory'];
+    },
+    cd: function(args) {
+      const secs = { about: 'about', work: 'work', experience: 'work', skills: 'skills', ai: 'ai', projects: 'projects', contact: 'contact', home: 'top', '~': 'top', '..': 'top' };
+      const t = (args[0] || '~').toLowerCase().replace(/\/$/, '');
+      const id = secs[t];
+      if (!id) return ['cd: no such directory: ' + args[0] + ' — try `ls`'];
+      const el = document.getElementById(id);
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
+      return ['→ /' + (id === 'top' ? '' : id)];
+    },
+    open: function(args) {
+      const f = (args[0] || '').toLowerCase();
+      if (f === 'resume.pdf' || f === 'resume') return this.commands.resume.call(this);
+      return ['open: usage: open resume.pdf'];
+    },
+    man: function(args) {
+      const pages = { whoami: 'print who shinigami-rog is', skills: 'list top skills with levels', experience: 'print work history', projects: 'list featured projects', ai: 'AI-assisted engineering work', contact: 'ways to reach Sivaguru', resume: 'download resume PDF', stock: 'the november 2025 story', theme: 'toggle dark/light mode', clear: 'clear the terminal', cat: 'cat <file> — print a file (try `ls`)', cd: 'cd <section> — jump to a page section', ls: 'list files', matrix: 'you already know', snake: 'ssssss', help: 'list commands' };
+      const k = (args[0] || '').toLowerCase();
+      return pages[k] ? [k + ' — ' + pages[k]] : ['what manual page do you want? try `man cat`'];
+    },
+  };
+
+  argSets() {
+    return {
+      cat: ['.secrets', 'about.md', 'ai/', 'contact.txt', 'experience.log', 'me', 'projects/', 'resume.pdf', 'skills/'],
+      cd: ['about', 'ai', 'contact', 'projects', 'skills', 'work', '~'],
+      open: ['resume.pdf'],
+      man: Object.keys(this.commands).sort(),
+    };
+  }
+
+  // returns { head, prefix, list } for the token being completed, or null
+  candidates(value) {
+    const v = value.replace(/^\s+/, '');
+    const parts = v.split(/\s+/);
+    if (parts.length === 1 && !/\s$/.test(v)) {
+      if (!parts[0]) return null;
+      return { head: '', prefix: parts[0], list: Object.keys(this.commands).concat(['theme', 'clear']).sort() };
+    }
+    const sets = this.argSets()[parts[0].toLowerCase()];
+    if (sets && parts.length <= 2) return { head: parts[0] + ' ', prefix: parts[1] || '', list: sets };
+    return null;
+  }
+
+  runCommand(raw) {
+    const cmd = raw.trim();
+    const lines = [...this.state.termLines, { text: 'guest@shinigami-rog:~$ ' + cmd, accent: true }];
+    if (cmd) {
+      this.history.push(cmd);
+      const key = cmd.toLowerCase().split(/\s+/)[0];
+      if (key === 'clear') {
+        this.setState({ termLines: [], termValue: '', histIdx: -1 });
+        return;
+      }
+      if (key === 'theme') {
+        this.toggle();
+        lines.push({ text: 'theme toggled.', dim: true });
+      } else if (this.commands[key]) {
+        const args = cmd.split(/\s+/).slice(1);
+        this.commands[key].call(this, args).forEach(t => lines.push({ text: t, dim: true }));
+      } else {
+        lines.push({ text: 'command not found: ' + key + ' — try `help`', dim: true });
+      }
+    }
+    this.setState({ termLines: lines, termValue: '', histIdx: -1 }, () => {
+      const body = this.root() && this.root().querySelector('[data-term-body]');
+      if (body) body.scrollTop = body.scrollHeight;
+    });
+  }
+
+  matchBase = null; matchIdx = -1;
+  onTermChange = (e) => { this.matchBase = null; this.setState({ termValue: e.target.value }); };
+
+  onTermKey = (e) => {
+    if (e.key === 'Enter') { this.matchBase = null; this.runCommand(this.state.termValue); return; }
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      this.matchBase = null;
+      const cur = this.state.termValue;
+      const c = this.candidates(cur);
+      if (!c) return;
+      const matches = c.list.filter(x => x.startsWith(c.prefix.toLowerCase()));
+      if (matches.length === 1) {
+        this.setState({ termValue: c.head + matches[0] + (matches[0].endsWith('/') ? '' : ' ') });
+      } else if (matches.length > 1) {
+        let p = matches[0];
+        matches.forEach(m => { while (!m.startsWith(p)) p = p.slice(0, -1); });
+        this.setState({
+          termValue: p.length > c.prefix.length ? c.head + p : this.state.termValue,
+          termLines: [...this.state.termLines,
+            { text: 'guest@shinigami-rog:~$ ' + cur.trim(), accent: true },
+            { text: matches.join('  '), dim: true }]
+        }, () => {
+          const body = this.root() && this.root().querySelector('[data-term-body]');
+          if (body) body.scrollTop = body.scrollHeight;
+        });
+      }
+      return;
+    }
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const dir = e.key === 'ArrowUp' ? -1 : 1;
+      // cycle through completion candidates when a prefix is typed
+      const base = this.matchBase !== null ? this.matchBase : this.state.termValue;
+      const cand = base ? this.candidates(base) : null;
+      if (cand && cand.prefix) {
+        const matches = cand.list.filter(c => c.startsWith(cand.prefix.toLowerCase()));
+        if (matches.length) {
+          if (this.matchBase === null) { this.matchBase = base; this.matchIdx = -1; }
+          this.matchIdx = (this.matchIdx + dir + matches.length) % matches.length;
+          this.setState({ termValue: cand.head + matches[this.matchIdx] });
+          return;
+        }
+      }
+      if (!this.history.length) return;
+      let i = this.state.histIdx === -1 ? this.history.length : this.state.histIdx;
+      i += dir;
+      if (i < 0) i = 0;
+      if (i >= this.history.length) { this.setState({ histIdx: -1, termValue: '' }); return; }
+      this.setState({ histIdx: i, termValue: this.history[i] });
+    }
+  };
+
+  ghost() {
+    const cur = this.state.termValue;
+    const c = cur ? this.candidates(cur) : null;
+    if (!c || !c.prefix) return '';
+    const m = c.list.find(x => x.startsWith(c.prefix.toLowerCase()) && x !== c.prefix.toLowerCase());
+    return m ? m.slice(c.prefix.length) : '';
+  }
+
+  startSnake() {
+    if (this.snakeCanvas) return;
+    const N = 21, CELL = Math.min(24, Math.floor(Math.min(window.innerWidth, window.innerHeight - 80) / N));
+    const c = document.createElement('canvas');
+    c.width = N * CELL; c.height = N * CELL;
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:fixed;inset:0;z-index:120;background:rgba(0,0,0,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:"JetBrains Mono",monospace';
+    const accent = this.accent();
+    const hud = document.createElement('div');
+    hud.style.cssText = 'color:' + accent + ';font-size:13px;letter-spacing:0.08em';
+    c.style.cssText = 'border:1px solid ' + accent + ';box-shadow:0 0 32px rgba(0,0,0,0.6)';
+    const foot = document.createElement('div');
+    foot.style.cssText = 'color:#6f7d6f;font-size:11px';
+    const touch = 'ontouchstart' in window;
+    foot.textContent = touch ? 'swipe to steer · tap to restart' : 'arrows/wasd move · esc quit';
+    const quit = document.createElement('button');
+    quit.textContent = '✕ quit';
+    quit.style.cssText = 'background:transparent;border:1px solid ' + accent + ';color:' + accent + ';font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 18px;border-radius:4px;cursor:pointer;min-height:44px';
+    quit.addEventListener('click', (e) => this.stopSnake(e));
+    wrap.append(hud, c, foot, quit);
+    document.body.appendChild(wrap);
+    this.snakeCanvas = wrap;
+    const ctx = c.getContext('2d');
+    let snake, dir, nextDir, food, score, dead;
+    const spawnFood = () => {
+      do { food = [Math.floor(Math.random() * N), Math.floor(Math.random() * N)]; }
+      while (snake.some(s => s[0] === food[0] && s[1] === food[1]));
+    };
+    const reset = () => {
+      snake = [[10, 10], [9, 10], [8, 10]]; dir = [1, 0]; nextDir = dir; score = 0; dead = false;
+      spawnFood();
+      hud.textContent = 'SNAKE — score 0';
+    };
+    reset();
+    const draw = () => {
+      ctx.fillStyle = '#050705'; ctx.fillRect(0, 0, c.width, c.height);
+      ctx.fillStyle = accent;
+      snake.forEach(([x, y], i) => {
+        ctx.globalAlpha = i === 0 ? 1 : Math.max(0.35, 1 - i * 0.04);
+        ctx.fillRect(x * CELL + 1, y * CELL + 1, CELL - 2, CELL - 2);
+      });
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#ff5f57';
+      ctx.beginPath();
+      ctx.arc(food[0] * CELL + CELL / 2, food[1] * CELL + CELL / 2, CELL / 2 - 2, 0, Math.PI * 2);
+      ctx.fill();
+      if (dead) {
+        ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(0, 0, c.width, c.height);
+        ctx.fillStyle = accent; ctx.textAlign = 'center';
+        ctx.font = 'bold 22px "JetBrains Mono",monospace';
+        ctx.fillText('GAME OVER', c.width / 2, c.height / 2 - 12);
+        ctx.font = '13px "JetBrains Mono",monospace';
+        ctx.fillText('score ' + score + ' — R restart · ESC quit', c.width / 2, c.height / 2 + 16);
+      }
+    };
+    const step = () => {
+      if (dead) return;
+      dir = nextDir;
+      const head = [snake[0][0] + dir[0], snake[0][1] + dir[1]];
+      if (head[0] < 0 || head[1] < 0 || head[0] >= N || head[1] >= N || snake.some(s => s[0] === head[0] && s[1] === head[1])) {
+        dead = true; draw(); return;
+      }
+      snake.unshift(head);
+      if (head[0] === food[0] && head[1] === food[1]) {
+        score += 10; hud.textContent = 'SNAKE — score ' + score; spawnFood();
+      } else snake.pop();
+      draw();
+    };
+    draw();
+    this.snakeTimer = setInterval(step, 110);
+    const keys = { arrowup: [0, -1], w: [0, -1], arrowdown: [0, 1], s: [0, 1], arrowleft: [-1, 0], a: [-1, 0], arrowright: [1, 0], d: [1, 0] };
+    this.snakeKeys = (e) => {
+      const k = e.key.toLowerCase();
+      if (k === 'escape') { this.stopSnake(e); return; }
+      e.stopPropagation(); e.preventDefault();
+      if (dead && k === 'r') { reset(); draw(); return; }
+      const nd = keys[k];
+      if (nd && !(nd[0] === -dir[0] && nd[1] === -dir[1])) nextDir = nd;
+    };
+    document.addEventListener('keydown', this.snakeKeys, true);
+    // touch: swipe to steer, tap to restart when dead
+    let ts = null;
+    c.style.touchAction = 'none';
+    c.addEventListener('touchstart', (e) => { ts = { x: e.touches[0].clientX, y: e.touches[0].clientY }; e.preventDefault(); }, { passive: false });
+    c.addEventListener('touchend', (e) => {
+      if (!ts) return;
+      const dx = e.changedTouches[0].clientX - ts.x, dy = e.changedTouches[0].clientY - ts.y;
+      ts = null;
+      if (Math.abs(dx) < 18 && Math.abs(dy) < 18) { if (dead) { reset(); draw(); } return; }
+      const nd = Math.abs(dx) > Math.abs(dy) ? [dx > 0 ? 1 : -1, 0] : [0, dy > 0 ? 1 : -1];
+      if (!(nd[0] === -dir[0] && nd[1] === -dir[1])) nextDir = nd;
+      e.preventDefault();
+    }, { passive: false });
+    this.stopSnake = (e) => {
+      if (e && e.stopPropagation) { e.stopPropagation(); e.preventDefault(); }
+      clearInterval(this.snakeTimer);
+      document.removeEventListener('keydown', this.snakeKeys, true);
+      wrap.remove();
+      this.snakeCanvas = null;
+      this.focusInput();
+    };
+  }
+
+  startMatrix() {
+    if (this.matrixCanvas) return;
+    const c = document.createElement('canvas');
+    c.style.cssText = 'position:fixed;inset:0;z-index:120;background:rgba(0,0,0,0.92);cursor:pointer';
+    c.width = window.innerWidth; c.height = window.innerHeight;
+    document.body.appendChild(c);
+    this.matrixCanvas = c;
+    const ctx = c.getContext('2d');
+    const fs = 16, cols = Math.ceil(c.width / fs);
+    const drops = Array.from({ length: cols }, () => Math.floor(Math.random() * -50));
+    const glyphs = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789$#@ラリルレロ';
+    const accent = this.accent();
+    const tick = () => {
+      ctx.fillStyle = 'rgba(0,0,0,0.08)';
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.font = fs + 'px "JetBrains Mono", monospace';
+      for (let i = 0; i < cols; i++) {
+        const ch = glyphs[Math.floor(Math.random() * glyphs.length)];
+        ctx.fillStyle = Math.random() > 0.975 ? '#eaffea' : accent;
+        ctx.fillText(ch, i * fs, drops[i] * fs);
+        if (drops[i] * fs > c.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+      this.matrixRaf = requestAnimationFrame(tick);
+    };
+    tick();
+    this.stopMatrix = (e) => {
+      if (e && e.stopPropagation) { e.stopPropagation(); e.preventDefault(); }
+      cancelAnimationFrame(this.matrixRaf);
+      c.remove();
+      this.matrixCanvas = null;
+      document.removeEventListener('keydown', this.stopMatrix, true);
+      this.focusInput();
+    };
+    c.addEventListener('click', this.stopMatrix);
+    document.addEventListener('keydown', this.stopMatrix, true);
+  }
+
+  focusInput = () => {
+    const inp = this.root() && this.root().querySelector('[data-term-input]');
+    if (inp) inp.focus();
+  };
+
+  themes = {
+    dark: {'--bg':'#050705','--fg':'#e6efe6','--dim':'#6f7d6f','--nav-bg':'rgba(5,7,5,0.85)','--panel':'rgba(255,255,255,0.015)'},
+    light:{'--bg':'#f2f1ea','--fg':'#1c211c','--dim':'#57605a','--nav-bg':'rgba(242,241,234,0.9)','--panel':'rgba(0,0,0,0.025)'}
+  };
+
+  accent() { return this.props.accent || '#4af07a'; }
+
+  rgba(hex, a) {
+    let h = (hex || '#4af07a').replace('#','');
+    if (h.length === 3) h = h.split('').map(c=>c+c).join('');
+    return 'rgba(' + parseInt(h.slice(0,2),16) + ',' + parseInt(h.slice(2,4),16) + ',' + parseInt(h.slice(4,6),16) + ',' + a + ')';
+  }
+
+  darken(hex) {
+    let h = hex.replace('#','');
+    if (h.length === 3) h = h.split('').map(c=>c+c).join('');
+    const f = c => Math.round(parseInt(c,16) * 0.5).toString(16).padStart(2,'0');
+    return '#' + f(h.slice(0,2)) + f(h.slice(2,4)) + f(h.slice(4,6));
+  }
+
+  root() { return document.querySelector('[data-term-root]'); }
+
+  applyTheme(theme) {
+    const r = this.root(); if (!r) return;
+    const t = this.themes[theme] || this.themes.dark;
+    Object.entries(t).forEach(([k,v]) => r.style.setProperty(k, v));
+    const dark = theme !== 'light';
+    const a = dark ? this.accent() : this.darken(this.accent());
+    r.style.setProperty('--accent', a);
+    r.style.setProperty('--accent-soft', this.rgba(a, dark ? 0.06 : 0.07));
+    r.style.setProperty('--line', dark ? this.rgba(this.accent(), 0.16) : 'rgba(20,40,25,0.18)');
+    r.style.setProperty('--glow', dark && this.props.glow !== false ? '0 0 16px ' + this.rgba(this.accent(), 0.45) : 'none');
+    const sl = r.querySelector('[data-scanlines]');
+    if (sl) sl.style.opacity = (this.props.scanlines !== false && dark) ? '0.3' : '0';
+    r.setAttribute('data-theme', theme);
+  }
+
+  logoFlash() {
+    const d = document.createElement('div');
+    d.style.cssText = 'position:fixed;inset:0;z-index:110;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0.9;transition:opacity .45s ease,transform .45s ease';
+    d.innerHTML = '<svg width="120" height="120" viewBox="0 0 64 64"><path d="M12 8C34 17 48 25 51 32C48 39 34 47 12 56L12 45C25 40.5 31 36.5 34.5 32C31 27.5 25 23.5 12 19Z" fill="#4af07a"></path><rect x="13" y="26" width="13" height="12" fill="#4af07a"></rect></svg>';
+    document.body.appendChild(d);
+    requestAnimationFrame(() => { d.style.opacity = '0'; d.style.transform = 'scale(1.35)'; });
+    setTimeout(() => d.remove(), 500);
+  }
+
+  toggle = () => {
+    const nt = this.state.theme === 'dark' ? 'light' : 'dark';
+    this.logoFlash();
+    this.setState({ theme: nt });
+    this.applyTheme(nt);
+  };
+
+  componentDidMount() {
+    this.applyTheme(this.state.theme);
+    this.wireHovers();
+    this.wireActiveNav();
+    this.wireKeys();
+    this.initAnime();
+  }
+
+  componentDidUpdate() { this.applyTheme(this.state.theme); }
+
+  componentWillUnmount() {
+    if (this.keyHandler) document.removeEventListener('keydown', this.keyHandler);
+    if (this.matrixCanvas && this.stopMatrix) this.stopMatrix();
+    if (this.snakeCanvas && this.stopSnake) this.stopSnake();
+  }
+
+  wireKeys() {
+    this.keyHandler = (e) => {
+      if (e.key && e.key.toLowerCase() === 't' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const t = e.target;
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+        this.toggle();
+      }
+    };
+    document.addEventListener('keydown', this.keyHandler);
+  }
+
+  wireActiveNav() {
+    const r = this.root(); if (!r) return;
+    const links = Array.from(r.querySelectorAll('[data-navlink]'));
+    if (!links.length) return;
+    const setActive = (id) => {
+      links.forEach(l => {
+        const on = l.getAttribute('data-target') === id;
+        l.style.color = on ? 'var(--accent, #4af07a)' : '';
+      });
+    };
+    const secs = ['about','work','skills','ai','projects','contact'].map(id => document.getElementById(id)).filter(Boolean);
+    this.navIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    secs.forEach(s => this.navIO.observe(s));
+  }
+
+  wireHovers() {
+    const r = this.root(); if (!r) return;
+    r.querySelectorAll('[data-row]').forEach(el => {
+      el.addEventListener('mouseenter', () => { el.style.background = this.rgba(this.accent(), 0.08); });
+      el.addEventListener('mouseleave', () => { el.style.removeProperty('background'); });
+    });
+    r.querySelectorAll('[data-contact]').forEach(el => {
+      el.addEventListener('mouseenter', () => { el.style.borderColor = 'var(--accent)'; el.style.background = this.rgba(this.accent(), 0.05); });
+      el.addEventListener('mouseleave', () => { el.style.removeProperty('border-color'); el.style.removeProperty('background'); });
+    });
+    r.querySelectorAll('[data-card]').forEach(el => {
+      el.addEventListener('mouseenter', () => { el.style.borderColor = 'var(--accent)'; el.style.transform = 'translateY(-3px)'; });
+      el.addEventListener('mouseleave', () => { el.style.removeProperty('border-color'); el.style.transform = 'translateY(0)'; });
+    });
+  }
+
+  typeInto(el, speed, done) {
+    const full = el.getAttribute('data-text') || el.textContent;
+    el.textContent = '';
+    let i = 0;
+    const tick = () => {
+      if (i <= full.length) { el.textContent = full.slice(0, i); i++; setTimeout(tick, speed); }
+      else if (done) done();
+    };
+    tick();
+  }
+
+  initAnime() {
+    const r = this.root(); if (!r) return;
+    const anime = window.anime;
+    if (this.props.reduceMotion || !anime) return;
+
+    const typeEl = r.querySelector('[data-type]');
+    if (typeEl) this.typeInto(typeEl, 45);
+
+    anime.timeline({ easing: 'easeOutExpo' })
+      .add({ targets: r.querySelectorAll('[data-hero-anim]'), opacity: [0,1], translateY: [16,0], duration: 850, delay: anime.stagger(130, { start: 300 }) });
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        if (el.hasAttribute('data-reveal')) {
+          anime({ targets: el, opacity: [0,1], translateX: [-14,0], duration: 700, easing: 'easeOutExpo', delay: +(el.getAttribute('data-delay') || 0) });
+          const cmd = el.querySelector('[data-cmd]');
+          if (cmd && !cmd.hasAttribute('data-typed')) {
+            cmd.setAttribute('data-typed', '1');
+            this.typeInto(cmd, 32);
+          }
+        }
+        if (el.hasAttribute('data-count')) this.countUp(el);
+        if (el.hasAttribute('data-ascii')) this.fillAscii(el);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.15 });
+
+    r.querySelectorAll('[data-reveal]').forEach(el => { el.style.opacity = 0; el.style.transform = 'translateX(-14px)'; io.observe(el); });
+    r.querySelectorAll('[data-count]').forEach(el => { el.textContent = '0' + (el.getAttribute('data-suffix') || ''); io.observe(el); });
+    r.querySelectorAll('[data-ascii]').forEach(el => { io.observe(el); });
+  }
+
+  fillAscii(el) {
+    const pct = +el.getAttribute('data-pct');
+    const o = { v: 0 };
+    window.anime({
+      targets: o, v: pct, duration: 1300, easing: 'easeOutExpo',
+      update: () => {
+        const filled = Math.min(20, Math.round(o.v / 5));
+        const fill = el.querySelector('[data-bar-fill]'), rest = el.querySelector('[data-bar-rest]');
+        if (fill) fill.textContent = '█'.repeat(filled);
+        if (rest) rest.textContent = '█'.repeat(20 - filled);
+        const num = el.nextElementSibling;
+        if (num && num.hasAttribute('data-pctnum')) num.textContent = Math.round(o.v);
+      }
+    });
+  }
+
+  countUp(el) {
+    const to = +el.getAttribute('data-to');
+    const suf = el.getAttribute('data-suffix') || '';
+    const o = { v: 0 };
+    window.anime({ targets: o, v: to, duration: 1400, easing: 'easeOutExpo', update: () => { el.textContent = Math.round(o.v) + suf; } });
+  }
+
+  renderVals() {
+    return {
+      toggle: this.toggle,
+      themeLabel: this.state.theme === 'dark' ? 'LIGHT' : 'DARK',
+      termValue: this.state.termValue,
+      termGhost: this.ghost(),
+      termLines: this.state.termLines.map(l => ({ text: l.text, color: l.accent ? 'var(--accent, #4af07a)' : (l.dim ? 'var(--dim, #6f7d6f)' : 'var(--fg, #e6efe6)') })),
+      onTermChange: this.onTermChange,
+      onTermKey: this.onTermKey,
+      focusInput: this.focusInput,
+      termOpen: this.state.termOpen,
+      termClosed: !this.state.termOpen,
+      termExpanded: this.state.termOpen && !this.state.termMin,
+      openTerm: this.openTerm,
+      closeTerm: this.closeTerm,
+      minTerm: this.minTerm,
+      maxTerm: this.maxTerm,
+      toggleTermMin: this.toggleTermMin,
+      termWinStyle: this.termWinStyle(),
+      onHeadDown: this.onHeadDown,
+      onResizeDown: this.onResizeDown,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:#08080a}
+  a{color:inherit;text-decoration:none}
+  a[data-navlink]:hover{color:var(--accent,#ff4d6d)}
+  ::selection{background:var(--accent,#ff4d6d);color:#fff}
+  [data-portfolio-root]{transition:background .4s ease,color .4s ease}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+</style>
+</helmet>
+<div data-portfolio-root id="top" style="background:var(--bg,#08080a);color:var(--fg,#f4f4f5);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;position:relative">
+
+  <!-- NAV -->
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:var(--nav-bg,rgba(8,8,10,0.72));border-bottom:1px solid var(--line,rgba(255,255,255,0.08))">
+    <div style="max-width:1200px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:15px;letter-spacing:0.02em">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid var(--accent,#ff4d6d);border-radius:7px;color:var(--accent,#ff4d6d);font-size:13px">SR</span>
+        <span>sivaguru<span style="color:var(--accent,#ff4d6d)">.dev</span></span>
+      </a>
+      <div style="display:flex;align-items:center;gap:28px">
+        <div style="display:none;gap:26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.04em;color:var(--dim,#8b8b93)" data-navmenu>
+          <a data-navlink href="#about" style="transition:color .2s">ABOUT</a>
+          <a data-navlink href="#work" style="transition:color .2s">WORK</a>
+          <a data-navlink href="#skills" style="transition:color .2s">SKILLS</a>
+          <a data-navlink href="#ai" style="transition:color .2s;color:var(--accent,#ff4d6d)">AI</a>
+          <a data-navlink href="#projects" style="transition:color .2s">PROJECTS</a>
+          <a data-navlink href="#contact" style="transition:color .2s">CONTACT</a>
+        </div>
+        <button onClick="{{ toggle }}" aria-label="Toggle theme" style="display:flex;align-items:center;gap:8px;background:var(--chip,rgba(255,255,255,0.05));border:1px solid var(--line,rgba(255,255,255,0.08));color:var(--fg,#f4f4f5);font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.06em;padding:8px 12px;border-radius:8px;cursor:pointer">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--accent,#ff4d6d);display:inline-block"></span>{{ themeLabel }}
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header style="position:relative;max-width:1200px;margin:0 auto;padding:150px 28px 90px;min-height:100vh;display:flex;flex-direction:column;justify-content:center">
+    <div data-grid style="position:absolute;inset:120px 0 40px;display:grid;opacity:0.5;pointer-events:none;z-index:0"></div>
+    <div style="position:absolute;inset:120px 0 40px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 55% at 30% 45%, transparent 40%, var(--bg,#08080a) 82%)"></div>
+    <div style="position:relative;z-index:2;max-width:900px">
+      <div data-hero-anim style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.22em;color:var(--accent,#ff4d6d);margin-bottom:26px">SENIOR SDE // 09+ YEARS // BANGALORE, IN</div>
+      <h1 data-hero-anim style="font-size:clamp(52px,9vw,116px);line-height:0.95;font-weight:600;letter-spacing:-0.03em;margin-bottom:24px">Sivaguru<br>Ravi<span style="color:var(--accent,#ff4d6d)">.</span></h1>
+      <p data-hero-anim style="font-size:clamp(17px,2.2vw,22px);line-height:1.5;color:var(--dim,#8b8b93);max-width:640px;font-weight:400;text-wrap:pretty">I architect enterprise-grade applications with <span style="color:var(--fg,#f4f4f5)">Java Spring&nbsp;Boot</span> &amp; <span style="color:var(--fg,#f4f4f5)">Angular</span> — and I'm building the <span style="color:var(--accent,#ff4d6d)">AI-assisted engineering</span> playbook for my org.</p>
+      <div data-hero-anim style="display:flex;flex-wrap:wrap;gap:14px;margin-top:38px">
+        <a href="#contact" style="display:inline-flex;align-items:center;gap:9px;background:var(--accent,#ff4d6d);color:#fff;font-weight:600;font-size:15px;padding:14px 24px;border-radius:10px">Get in touch <span style="font-family:'JetBrains Mono',monospace">→</span></a>
+        <a href="#work" style="display:inline-flex;align-items:center;gap:9px;background:var(--chip,rgba(255,255,255,0.05));border:1px solid var(--line,rgba(255,255,255,0.08));color:var(--fg,#f4f4f5);font-weight:500;font-size:15px;padding:14px 24px;border-radius:10px">View experience</a>
+      </div>
+    </div>
+    <!-- STATS -->
+    <div style="position:relative;z-index:2;margin-top:72px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--line,rgba(255,255,255,0.08));border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:14px;overflow:hidden">
+      <div style="background:var(--bg,#08080a);padding:26px 22px" data-reveal>
+        <div style="font-size:clamp(34px,4vw,48px);font-weight:600;letter-spacing:-0.02em"><span data-count data-to="9" data-suffix="+">9+</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.08em;color:var(--dim,#8b8b93);margin-top:8px">YEARS EXPERIENCE</div>
+      </div>
+      <div style="background:var(--bg,#08080a);padding:26px 22px" data-reveal data-delay="80">
+        <div style="font-size:clamp(34px,4vw,48px);font-weight:600;letter-spacing:-0.02em"><span data-count data-to="50" data-suffix="+">50+</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.08em;color:var(--dim,#8b8b93);margin-top:8px">ENGINEERS MENTORED</div>
+      </div>
+      <div style="background:var(--bg,#08080a);padding:26px 22px" data-reveal data-delay="160">
+        <div style="font-size:clamp(34px,4vw,48px);font-weight:600;letter-spacing:-0.02em;color:var(--accent,#ff4d6d)"><span data-count data-to="70" data-suffix="%">70%</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.08em;color:var(--dim,#8b8b93);margin-top:8px">FASTER BUILDS</div>
+      </div>
+      <div style="background:var(--bg,#08080a);padding:26px 22px" data-reveal data-delay="240">
+        <div style="font-size:clamp(34px,4vw,48px);font-weight:600;letter-spacing:-0.02em"><span data-count data-to="8" data-suffix="">8</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.08em;color:var(--dim,#8b8b93);margin-top:8px">SECURITY TOOLS</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" style="scroll-margin-top:80px;max-width:1200px;margin:0 auto;padding:90px 28px;border-top:1px solid var(--line,rgba(255,255,255,0.08))">
+    <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.3fr);gap:56px" data-abtgrid>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;color:var(--accent,#ff4d6d);margin-bottom:16px" data-reveal>01 / ABOUT</div>
+        <h2 style="font-size:clamp(30px,4vw,42px);font-weight:600;letter-spacing:-0.02em;line-height:1.1" data-reveal>Nine years of shipping systems people rely on.</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <p style="font-size:19px;line-height:1.6;color:var(--fg,#f4f4f5);text-wrap:pretty" data-reveal>9+ years architecting enterprise-grade applications, specialized in <b>Java Spring Boot</b> and <b>Angular</b> frameworks. My work spans backend microservices, security frameworks, healthcare products, and next-generation UI platforms.</p>
+        <p style="font-size:17px;line-height:1.65;color:var(--dim,#8b8b93);text-wrap:pretty" data-reveal data-delay="100">Recognized with <span style="color:var(--accent,#ff4d6d)">stock options in November 2025</span> for exceptional technical leadership. Today I'm focused on scaling AI-assisted engineering practices across my organization.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px" data-reveal data-delay="160">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 13px;border-radius:100px;background:var(--chip,rgba(255,255,255,0.05));border:1px solid var(--line,rgba(255,255,255,0.08));color:var(--dim,#8b8b93)">B.Tech · Computer Science</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 13px;border-radius:100px;background:var(--chip,rgba(255,255,255,0.05));border:1px solid var(--line,rgba(255,255,255,0.08));color:var(--dim,#8b8b93)">Mahatma Gandhi University</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 13px;border-radius:100px;background:var(--chip,rgba(255,255,255,0.05));border:1px solid var(--line,rgba(255,255,255,0.08));color:var(--dim,#8b8b93)">Bangalore, India</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work" style="scroll-margin-top:80px;max-width:1200px;margin:0 auto;padding:90px 28px;border-top:1px solid var(--line,rgba(255,255,255,0.08))">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;color:var(--accent,#ff4d6d);margin-bottom:16px" data-reveal>02 / EXPERIENCE</div>
+    <h2 style="font-size:clamp(30px,4vw,44px);font-weight:600;letter-spacing:-0.02em;margin-bottom:56px" data-reveal>Where I've built</h2>
+    <div style="position:relative;border-left:1px solid var(--line,rgba(255,255,255,0.14));margin-left:8px">
+
+      <div style="position:relative;padding:0 0 48px 34px" data-reveal>
+        <div style="position:absolute;left:-6px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--accent,#ff4d6d);box-shadow:0 0 0 4px var(--bg,#08080a)"></div>
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:6px">
+          <h3 style="font-size:22px;font-weight:600">Infrrd Inc</h3>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent,#ff4d6d)">TECHNICAL SPECIALIST</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--dim,#8b8b93);margin-bottom:16px">Aug 2023 — Present · Bangalore, India</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:9px">
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Awarded <b>stock options (Nov 2025)</b> for technical leadership</li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Built an OSS security framework integrating <b>8 security tools</b></li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Led the <b>Annie UI</b> platform on Angular 16</li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Cut build time <b>70%</b> (20–30 min → under 10 min) &amp; mentored junior devs</li>
+        </ul>
+      </div>
+
+      <div style="position:relative;padding:0 0 48px 34px" data-reveal data-delay="80">
+        <div style="position:absolute;left:-6px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--dim,#8b8b93);box-shadow:0 0 0 4px var(--bg,#08080a)"></div>
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:6px">
+          <h3 style="font-size:22px;font-weight:600">Philips India</h3>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim,#8b8b93)">SOFTWARE TECHNOLOGIST 1</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--dim,#8b8b93);margin-bottom:16px">Dec 2021 — Jul 2023 · Bangalore, India</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:9px">
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Healthcare product development</li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Role-based API security implementation</li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Azure Pipelines automation &amp; test suite development</li>
+        </ul>
+      </div>
+
+      <div style="position:relative;padding:0 0 48px 34px" data-reveal data-delay="120">
+        <div style="position:absolute;left:-6px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--dim,#8b8b93);box-shadow:0 0 0 4px var(--bg,#08080a)"></div>
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:6px">
+          <h3 style="font-size:22px;font-weight:600">Infrrd Inc</h3>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim,#8b8b93)">SENIOR SOFTWARE ENGINEER</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--dim,#8b8b93);margin-bottom:16px">May 2020 — Nov 2021 · Bangalore, India</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:9px">
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Python SDK for AWS automation — <b>60% efficiency gain</b></li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Third-party API integration &amp; image processing SDK</li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Document processing improvements</li>
+        </ul>
+      </div>
+
+      <div style="position:relative;padding:0 0 8px 34px" data-reveal data-delay="160">
+        <div style="position:absolute;left:-6px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--dim,#8b8b93);box-shadow:0 0 0 4px var(--bg,#08080a)"></div>
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:6px">
+          <h3 style="font-size:22px;font-weight:600">Mindtree Pvt Ltd</h3>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim,#8b8b93)">SENIOR SOFTWARE ENGINEER</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--dim,#8b8b93);margin-bottom:16px">Jan 2017 — Oct 2019 · Bangalore, India</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:9px">
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Built the <b>3D Canvas UI for Bose VB1</b> (Angular 8, Electron)</li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>Mentored <b>50+ engineers</b> &amp; led technical architecture</li>
+          <li style="display:flex;gap:11px;font-size:16px;line-height:1.5;color:var(--fg,#f4f4f5)"><span style="color:var(--accent,#ff4d6d);font-family:'JetBrains Mono',monospace">›</span>BLE Mesh development for indoor localization</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" style="scroll-margin-top:80px;max-width:1200px;margin:0 auto;padding:90px 28px;border-top:1px solid var(--line,rgba(255,255,255,0.08))">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;color:var(--accent,#ff4d6d);margin-bottom:16px" data-reveal>03 / TECHNICAL SKILLS</div>
+    <h2 style="font-size:clamp(30px,4vw,44px);font-weight:600;letter-spacing:-0.02em;margin-bottom:56px" data-reveal>The stack, quantified</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:44px 56px" data-skillgrid>
+
+      <div data-reveal>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;color:var(--dim,#8b8b93);margin-bottom:22px;padding-bottom:10px;border-bottom:1px solid var(--line,rgba(255,255,255,0.08))">BACKEND</div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>Java &amp; Spring Boot</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">95</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="95" style="height:100%;width:95%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>RESTful APIs</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">95</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="95" style="height:100%;width:95%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>Microservices</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">90</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="90" style="height:100%;width:90%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>Node.js &amp; Python</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">85</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="85" style="height:100%;width:85%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+        </div>
+      </div>
+
+      <div data-reveal data-delay="80">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;color:var(--dim,#8b8b93);margin-bottom:22px;padding-bottom:10px;border-bottom:1px solid var(--line,rgba(255,255,255,0.08))">FRONTEND</div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>Angular 2–16</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">95</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="95" style="height:100%;width:95%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>RxJS</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">90</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="90" style="height:100%;width:90%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>React &amp; TypeScript</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">88</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="88" style="height:100%;width:88%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>UI/UX Optimization</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">85</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="85" style="height:100%;width:85%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+        </div>
+      </div>
+
+      <div data-reveal data-delay="120">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;color:var(--dim,#8b8b93);margin-bottom:22px;padding-bottom:10px;border-bottom:1px solid var(--line,rgba(255,255,255,0.08))">CLOUD &amp; DEVOPS</div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>Build Optimization</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">92</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="92" style="height:100%;width:92%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>Azure DevOps</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">90</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="90" style="height:100%;width:90%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>Docker &amp; CI/CD</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">88</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="88" style="height:100%;width:88%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>AWS</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">85</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="85" style="height:100%;width:85%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+        </div>
+      </div>
+
+      <div data-reveal data-delay="160">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;color:var(--dim,#8b8b93);margin-bottom:22px;padding-bottom:10px;border-bottom:1px solid var(--line,rgba(255,255,255,0.08))">SECURITY</div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>OSS Vulnerability</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">90</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="90" style="height:100%;width:90%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>Security Remediation</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">90</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="90" style="height:100%;width:90%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>License Compliance</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">88</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="88" style="height:100%;width:88%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:8px"><span>OWASP</span><span style="font-family:'JetBrains Mono',monospace;color:var(--dim,#8b8b93)">85</span></div><div style="height:4px;background:var(--chip,rgba(255,255,255,0.05));border-radius:100px;overflow:hidden"><div data-bar data-pct="85" style="height:100%;width:85%;background:var(--accent,#ff4d6d);border-radius:100px"></div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AI LEADERSHIP -->
+  <section id="ai" style="scroll-margin-top:80px;position:relative;border-top:1px solid var(--line,rgba(255,255,255,0.08));background:var(--accent-soft,rgba(255,77,109,0.14))">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 28px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px" data-reveal>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;color:var(--accent,#ff4d6d)">04 / DIFFERENTIATOR</span>
+        <span style="height:1px;flex:0 0 40px;background:var(--accent,#ff4d6d)"></span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--accent,#ff4d6d);border:1px solid var(--accent,#ff4d6d);padding:4px 9px;border-radius:100px">AI-NATIVE</span>
+      </div>
+      <h2 style="font-size:clamp(32px,5vw,58px);font-weight:600;letter-spacing:-0.03em;line-height:1.02;max-width:900px;margin-bottom:22px" data-reveal>AI-assisted engineering leadership</h2>
+      <p style="font-size:19px;line-height:1.6;color:var(--dim,#8b8b93);max-width:680px;margin-bottom:52px;text-wrap:pretty" data-reveal data-delay="80">I'm driving Claude &amp; AI automation adoption across the org — turning individual workflows into reusable, org-wide engineering leverage.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px" data-aigrid>
+        <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px" data-reveal>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent,#ff4d6d);margin-bottom:14px">skill.review</div>
+          <h3 style="font-size:19px;font-weight:600;margin-bottom:9px">PR Review Council</h3>
+          <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93)">An org-wide Claude skill that runs multi-perspective automated review on every pull request.</p>
+        </div>
+        <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px" data-reveal data-delay="70">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent,#ff4d6d);margin-bottom:14px">skill.deliver</div>
+          <h3 style="font-size:19px;font-weight:600;margin-bottom:9px">Epic Delivery</h3>
+          <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93)">Structured skill that takes an epic from breakdown through delivery with AI in the loop.</p>
+        </div>
+        <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px" data-reveal data-delay="140">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent,#ff4d6d);margin-bottom:14px">skill.worktree</div>
+          <h3 style="font-size:19px;font-weight:600;margin-bottom:9px">Parallel JIRA Worktrees</h3>
+          <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93)">A worktree skill enabling parallel JIRA deliveries without branch collisions.</p>
+        </div>
+        <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px" data-reveal data-delay="210">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent,#ff4d6d);margin-bottom:14px">skill.timelog</div>
+          <h3 style="font-size:19px;font-weight:600;margin-bottom:9px">Time Log Automation</h3>
+          <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93)">Removes manual time tracking overhead by automating log capture end to end.</p>
+        </div>
+        <div style="grid-column:1/-1;background:var(--accent,#ff4d6d);border-radius:16px;padding:32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px" data-reveal data-delay="280">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1.4s infinite"></span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;color:rgba(255,255,255,0.85)">IN PROGRESS</span></div>
+            <h3 style="font-size:clamp(22px,3vw,30px);font-weight:600;color:#fff">Org-level project-wide memory system for Claude</h3>
+          </div>
+          <p style="font-size:15px;line-height:1.5;color:rgba(255,255,255,0.9);max-width:320px">A shared memory layer so AI carries context across projects and teams — currently in active development.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" style="scroll-margin-top:80px;max-width:1200px;margin:0 auto;padding:90px 28px;border-top:1px solid var(--line,rgba(255,255,255,0.08))">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;color:var(--accent,#ff4d6d);margin-bottom:16px" data-reveal>05 / FEATURED PROJECTS</div>
+    <h2 style="font-size:clamp(30px,4vw,44px);font-weight:600;letter-spacing:-0.02em;margin-bottom:56px" data-reveal>Selected work</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px" data-projgrid>
+
+      <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px;transition:transform .3s ease,border-color .3s ease" data-reveal data-card>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim,#8b8b93)">01</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent,#ff4d6d)">2023—PRESENT</span></div>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:10px">Annie UI Platform</h3>
+        <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93);margin-bottom:18px">Next-generation UI platform built as the modern front door to the product.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Angular 16</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">TypeScript</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">RxJS</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Spring Boot</span></div>
+      </div>
+
+      <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px;transition:transform .3s ease,border-color .3s ease" data-reveal data-delay="60" data-card>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim,#8b8b93)">02</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent,#ff4d6d)">2023—2024</span></div>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:10px">Security Framework</h3>
+        <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93);margin-bottom:18px">Unified OSS security scanning across <b style="color:var(--fg,#f4f4f5)">8 integrated tools</b>.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">OWASP</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Semgrep</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Snyk</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">SonarQube</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">TruffleHog</span></div>
+      </div>
+
+      <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px;transition:transform .3s ease,border-color .3s ease" data-reveal data-delay="120" data-card>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim,#8b8b93)">03</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent,#ff4d6d)">2023</span></div>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:10px">Build Optimization</h3>
+        <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93);margin-bottom:18px"><b style="color:var(--fg,#f4f4f5)">70% faster builds</b> — from 20–30 min down to under 10.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">CI/CD</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Caching</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Pipelines</span></div>
+      </div>
+
+      <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px;transition:transform .3s ease,border-color .3s ease" data-reveal data-card>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim,#8b8b93)">04</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent,#ff4d6d)">2023</span></div>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:10px">Failed Page Handler</h3>
+        <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93);margin-bottom:18px">Document processing with resilient failure recovery.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Java</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Spring Boot</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Angular</span></div>
+      </div>
+
+      <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px;transition:transform .3s ease,border-color .3s ease" data-reveal data-delay="60" data-card>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim,#8b8b93)">05</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent,#ff4d6d)">2022—2023</span></div>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:10px">Angular Modernization</h3>
+        <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93);margin-bottom:18px">Angular 8 → 14 migration with <b style="color:var(--fg,#f4f4f5)">zero downtime</b>, fully backward compatible.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Angular</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Migration</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Refactor</span></div>
+      </div>
+
+      <div style="background:var(--bg2,#0f0f12);border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:16px;padding:28px;transition:transform .3s ease,border-color .3s ease" data-reveal data-delay="120" data-card>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim,#8b8b93)">06</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent,#ff4d6d)">2020—2021</span></div>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:10px">AWS Automation SDK</h3>
+        <p style="font-size:15px;line-height:1.55;color:var(--dim,#8b8b93);margin-bottom:18px">Python SDK that cut manual AWS work by <b style="color:var(--fg,#f4f4f5)">60%</b>.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Python</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">AWS Boto3</span></div>
+      </div>
+
+      <div style="grid-column:1/-1;background:linear-gradient(120deg,var(--accent-soft,rgba(255,77,109,0.14)),transparent);border:1px solid var(--accent,#ff4d6d);border-radius:16px;padding:30px;transition:transform .3s ease" data-reveal data-card>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent,#ff4d6d)">07</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent,#ff4d6d)">ONGOING</span></div>
+        <h3 style="font-size:22px;font-weight:600;margin-bottom:10px">Org-wide Claude Automation Skills</h3>
+        <p style="font-size:16px;line-height:1.55;color:var(--fg,#f4f4f5);margin-bottom:18px;max-width:720px">PR review council, epic delivery, worktree skill for parallel JIRA deliveries, and time-log automation — with an org-level project-wide memory system for Claude in active development.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Claude Skills</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Automation</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;background:var(--chip,rgba(255,255,255,0.05));color:var(--dim,#8b8b93)">Org Tooling</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="scroll-margin-top:80px;border-top:1px solid var(--line,rgba(255,255,255,0.08))">
+    <div style="max-width:1200px;margin:0 auto;padding:100px 28px 90px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;color:var(--accent,#ff4d6d);margin-bottom:20px" data-reveal>06 / CONTACT</div>
+      <h2 style="font-size:clamp(38px,7vw,84px);font-weight:600;letter-spacing:-0.03em;line-height:1;margin-bottom:36px" data-reveal>Let's build<br>something<span style="color:var(--accent,#ff4d6d)">.</span></h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--line,rgba(255,255,255,0.08));border:1px solid var(--line,rgba(255,255,255,0.08));border-radius:14px;overflow:hidden;max-width:920px" data-reveal data-delay="80">
+        <a href="mailto:sivaguru94@gmail.com" style="background:var(--bg,#08080a);padding:24px;display:block">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--dim,#8b8b93);margin-bottom:8px">EMAIL</div>
+          <div style="font-size:16px;font-weight:500;word-break:break-all">sivaguru94@gmail.com</div>
+        </a>
+        <a href="tel:+919020708677" style="background:var(--bg,#08080a);padding:24px;display:block">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--dim,#8b8b93);margin-bottom:8px">PHONE</div>
+          <div style="font-size:16px;font-weight:500">+91 90207 08677</div>
+        </a>
+        <a href="https://www.linkedin.com/in/sivaguru-ravi/" target="_blank" rel="noopener" style="background:var(--bg,#08080a);padding:24px;display:block">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--dim,#8b8b93);margin-bottom:8px">LINKEDIN</div>
+          <div style="font-size:16px;font-weight:500;color:var(--accent,#ff4d6d)">/in/sivaguru-ravi ↗</div>
+        </a>
+        <div style="background:var(--bg,#08080a);padding:24px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--dim,#8b8b93);margin-bottom:8px">LOCATION</div>
+          <div style="font-size:16px;font-weight:500">Bangalore, India</div>
+        </div>
+      </div>
+    </div>
+    <footer style="border-top:1px solid var(--line,rgba(255,255,255,0.08))">
+      <div style="max-width:1200px;margin:0 auto;padding:28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim,#8b8b93)">
+        <span>© 2026 SIVAGURU RAVI</span>
+        <span>SENIOR SDE · JAVA · ANGULAR · AI-ASSISTED</span>
+      </div>
+    </footer>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:820},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#ff4d6d&quot;,&quot;options&quot;:[&quot;#ff4d6d&quot;,&quot;#3b82f6&quot;,&quot;#22c55e&quot;,&quot;#f59e0b&quot;,&quot;#a855f7&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  state = { theme: this.props.theme || 'dark' };
+
+  themes = {
+    dark: {'--bg':'#08080a','--bg2':'#0f0f12','--fg':'#f4f4f5','--dim':'#8b8b93','--line':'rgba(255,255,255,0.08)','--nav-bg':'rgba(8,8,10,0.72)','--chip':'rgba(255,255,255,0.05)'},
+    light:{'--bg':'#f4f4f2','--bg2':'#ffffff','--fg':'#101013','--dim':'#5a5a63','--line':'rgba(0,0,0,0.10)','--nav-bg':'rgba(244,244,242,0.78)','--chip':'rgba(0,0,0,0.04)'}
+  };
+
+  accent() { return this.props.accent || '#ff4d6d'; }
+
+  rgba(hex, a) {
+    let h = (hex || '#ff4d6d').replace('#','');
+    if (h.length === 3) h = h.split('').map(c=>c+c).join('');
+    const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+    return 'rgba('+r+','+g+','+b+','+a+')';
+  }
+
+  root() { return document.querySelector('[data-portfolio-root]'); }
+
+  applyTheme(theme) {
+    const r = this.root(); if (!r) return;
+    const t = this.themes[theme] || this.themes.dark;
+    Object.entries(t).forEach(([k,v]) => r.style.setProperty(k, v));
+    const a = this.accent();
+    r.style.setProperty('--accent', a);
+    r.style.setProperty('--accent-soft', this.rgba(a, theme === 'light' ? 0.08 : 0.14));
+    r.setAttribute('data-theme', theme);
+  }
+
+  toggle = () => {
+    const nt = this.state.theme === 'dark' ? 'light' : 'dark';
+    this.setState({ theme: nt });
+    this.applyTheme(nt);
+  };
+
+  componentDidMount() {
+    this.applyTheme(this.state.theme);
+    this.showMenu();
+    this.buildGrid();
+    this.wireCards();
+    this.initAnime();
+  }
+
+  componentDidUpdate() { this.applyTheme(this.state.theme); }
+
+  showMenu() {
+    const m = this.root() && this.root().querySelector('[data-navmenu]');
+    if (m && window.innerWidth > 720) m.style.display = 'flex';
+  }
+
+  buildGrid() {
+    const c = this.root() && this.root().querySelector('[data-grid]');
+    if (!c) return;
+    this.cols = 20; this.rows = 10;
+    c.style.gridTemplateColumns = 'repeat(' + this.cols + ',1fr)';
+    const n = this.cols * this.rows;
+    for (let i = 0; i < n; i++) {
+      const cell = document.createElement('div');
+      cell.style.cssText = 'display:flex;align-items:center;justify-content:center';
+      const dot = document.createElement('div');
+      dot.setAttribute('data-dot', '');
+      dot.style.cssText = 'width:4px;height:4px;border-radius:50%;background:' + this.rgba('#8b8b93', 0.32);
+      cell.appendChild(dot);
+      c.appendChild(cell);
+    }
+  }
+
+  wireCards() {
+    const r = this.root(); if (!r) return;
+    r.querySelectorAll('[data-card]').forEach(el => {
+      el.addEventListener('mouseenter', () => { el.style.transform = 'translateY(-4px)'; el.style.borderColor = this.accent(); });
+      el.addEventListener('mouseleave', () => { el.style.transform = 'translateY(0)'; el.style.borderColor = ''; el.style.removeProperty('border-color'); });
+    });
+  }
+
+  initAnime() {
+    const r = this.root(); if (!r) return;
+    const anime = window.anime;
+    const motion = !this.props.reduceMotion && !!anime;
+    if (!motion) return;
+
+    const tl = anime.timeline({ easing: 'easeOutExpo' });
+    tl.add({ targets: r.querySelectorAll('[data-hero-anim]'), opacity: [0,1], translateY: [26,0], duration: 950, delay: anime.stagger(110) });
+
+    const dots = r.querySelectorAll('[data-dot]');
+    if (dots.length) {
+      anime({
+        targets: dots,
+        scale: [1, 2.6],
+        opacity: [0.28, 0.7],
+        backgroundColor: [this.rgba('#8b8b93', 0.32), this.accent()],
+        easing: 'easeInOutSine',
+        duration: 1700,
+        delay: anime.stagger(140, { grid: [this.cols, this.rows], from: 'center' }),
+        loop: true,
+        direction: 'alternate'
+      });
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        if (el.hasAttribute('data-reveal')) {
+          anime({ targets: el, opacity: [0,1], translateY: [18,0], duration: 800, easing: 'easeOutExpo', delay: +(el.getAttribute('data-delay') || 0) });
+        }
+        if (el.hasAttribute('data-count')) this.countUp(el);
+        if (el.hasAttribute('data-bar')) anime({ targets: el, width: [0, el.getAttribute('data-pct') + '%'], duration: 1200, easing: 'easeOutExpo' });
+        io.unobserve(el);
+      });
+    }, { threshold: 0.15 });
+
+    r.querySelectorAll('[data-reveal]').forEach(el => { el.style.opacity = 0; el.style.transform = 'translateY(18px)'; io.observe(el); });
+    r.querySelectorAll('[data-count]').forEach(el => { el.textContent = '0' + (el.getAttribute('data-suffix') || ''); io.observe(el); });
+    r.querySelectorAll('[data-bar]').forEach(el => { el.style.width = '0%'; io.observe(el); });
+  }
+
+  countUp(el) {
+    const to = +el.getAttribute('data-to');
+    const suf = el.getAttribute('data-suffix') || '';
+    const o = { v: 0 };
+    window.anime({ targets: o, v: to, duration: 1400, easing: 'easeOutExpo', update: () => { el.textContent = Math.round(o.v) + suf; } });
+  }
+
+  renderVals() {
+    return { toggle: this.toggle, themeLabel: this.state.theme === 'dark' ? 'LIGHT' : 'DARK' };
+  }
+}
+</script>
+</body>
+</html>
