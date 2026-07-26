@@ -60,8 +60,16 @@ confirmed 2026-07-26; design wins).
 - `npm run dev` — dev server
 - `npm run build` — production build (must stay green)
 - `npm run lint` — ESLint
-- `npx playwright test` — e2e/smoke (visual baselines are CI-generated;
-  locally use the Playwright Docker image if updating them)
+- `npx playwright test` — full suite. Projects: desktop-chromium (all specs),
+  mobile-chromium (responsive + visual), iPhone/iPad WebKit (responsive; CI
+  or `ALL_BROWSERS=1` only). Visual baselines live in
+  `e2e/visual.spec.ts-snapshots/`; regenerate with
+  `npx playwright test e2e/visual.spec.ts --update-snapshots` after
+  intentional visual changes (Linux-generated; 3% diff tolerance absorbs
+  CI rasterization drift).
+- `node scripts/check-budget.mjs` — first-load JS budget for `/` (runs in
+  CI after build; fails if the lazy shell/games ever leak into first-load)
+- `node scripts/gen-favicon.mjs` — regenerate favicon.ico if icon.svg changes
 
 ## Git / delivery
 

@@ -23,6 +23,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
+      - run: node scripts/check-budget.mjs
 
   e2e:
     runs-on: ubuntu-latest
@@ -36,7 +37,7 @@ jobs:
       # rejects its optional-dep entries — keep CI on the same npm major
       - run: npm install -g npm@11
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit
       - run: npx playwright test
       - uses: actions/upload-artifact@v4
         if: failure()

@@ -2,6 +2,25 @@ import { defineConfig, devices } from "@playwright/test";
 
 const PORT = 3100;
 
+/* WebKit needs system libs that WSL dev boxes usually lack — those projects
+ * run in CI (which installs --with-deps). Set ALL_BROWSERS=1 to force them
+ * locally. */
+const webkitProjects =
+  process.env.CI || process.env.ALL_BROWSERS
+    ? [
+        {
+          name: "iphone-webkit",
+          use: { ...devices["iPhone 14"] },
+          testMatch: /responsive\.spec\.ts/,
+        },
+        {
+          name: "ipad-webkit",
+          use: { ...devices["iPad (gen 7)"] },
+          testMatch: /responsive\.spec\.ts/,
+        },
+      ]
+    : [];
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
@@ -11,6 +30,13 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}`,
     trace: "on-first-retry",
+  },
+  expect: {
+    toHaveScreenshot: {
+      /* absorbs freetype/AA differences between local Linux and CI runners;
+       * baselines regenerated in CI via the update-snapshots workflow */
+      maxDiffPixelRatio: 0.03,
+    },
   },
   webServer: {
     command: `npm run build && npm run start -- -p ${PORT}`,
@@ -23,9 +49,17 @@ export default defineConfig({
   projects: [
     {
       name: "desktop-chromium",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1440, height: 900 },
+      },
+      testIgnore: /responsive\.spec\.ts/,
     },
-    // Grown per milestone (plan-revised.md §8): mobile-viewport chromium,
-    // WebKit functional projects, reduced-motion project, visual baselines.
+    {
+      name: "mobile-chromium",
+      use: { ...devices["Pixel 7"] },
+      testMatch: /(responsive|visual)\.spec\.ts/,
+    },
+    ...webkitProjects,
   ],
 });
