@@ -11,6 +11,7 @@ on:
       - "**.md"
       - "docs-private/**"
       - "design/**"
+      - "deploy/scripts/**" # server-side only, not part of the image
   workflow_dispatch:
 
 permissions:
