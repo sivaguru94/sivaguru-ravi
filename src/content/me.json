@@ -1,0 +1,297 @@
+{
+  "identity": {
+    "firstName": "Sivaguru",
+    "lastName": "Ravi",
+    "alias": "shinigami-rog",
+    "domain": "shinigami-rog.cc",
+    "email": "sivaguru94@gmail.com",
+    "linkedin": {
+      "label": "/in/sivaguru-ravi ↗",
+      "url": "https://www.linkedin.com/in/sivaguru-ravi/"
+    },
+    "location": "Bangalore, India",
+    "shortTitle": "Senior SDE",
+    "jobTitle": "Senior Software Development Engineer"
+  },
+  "seo": {
+    "title": "Sivaguru Ravi (shinigami-rog) — Senior SDE",
+    "description": "Senior SDE · 9+ yrs · Java Spring Boot · Angular. Architecting enterprise-grade applications and building the org's AI-assisted engineering playbook. a.k.a. shinigami-rog."
+  },
+  "hero": {
+    "command": "whoami --verbose",
+    "tagline": "SENIOR SDE · 9+ YRS · JAVA SPRING BOOT · ANGULAR",
+    "comments": [
+      "# Architecting enterprise-grade applications for 9+ years.",
+      "# Recognized for exceptional technical leadership.",
+      "# Currently building the org's AI-assisted engineering playbook."
+    ],
+    "actions": [
+      { "label": "./contact --now", "href": "#contact", "primary": true },
+      { "label": "cat experience.log", "href": "#work", "primary": false }
+    ],
+    "statsTitle": "shinigami-rog: ~/stats — $ stats --summary",
+    "stats": [
+      { "to": 9, "suffix": "+", "label": "YRS_EXPERIENCE" },
+      { "to": 50, "suffix": "+", "label": "ENGINEERS_MENTORED" },
+      { "to": 70, "suffix": "%", "label": "FASTER_BUILDS" },
+      { "to": 8, "suffix": "", "label": "SECURITY_TOOLS" }
+    ]
+  },
+  "about": {
+    "command": "cat about.md",
+    "heading": "Nine years of shipping systems people rely on.",
+    "lead": "9+ years architecting enterprise-grade applications, specialized in **Java Spring Boot** and **Angular**. Backend microservices, security frameworks, healthcare products, next-generation UI platforms.",
+    "sub": "Recognized for exceptional technical leadership. B.Tech Computer Science, Mahatma Gandhi University. Based in Bangalore, India."
+  },
+  "work": {
+    "command": "cat experience.log | sort -r",
+    "jobs": [
+      {
+        "company": "Infrrd Inc",
+        "role": "TECHNICAL_SPECIALIST",
+        "period": "[2023-08 → PRESENT]",
+        "location": "Bangalore, India",
+        "current": true,
+        "bullets": [
+          "Recognized for **exceptional technical leadership**",
+          "Built OSS security framework integrating **8 security tools**",
+          "Led **Annie UI** platform on Angular 16",
+          "Cut build time **70%** (20–30 min → <10 min) · mentored junior devs"
+        ]
+      },
+      {
+        "company": "Philips India",
+        "role": "SOFTWARE_TECHNOLOGIST_1",
+        "period": "[2021-12 → 2023-07]",
+        "location": "Bangalore, India",
+        "current": false,
+        "bullets": [
+          "Healthcare product development",
+          "Role-based API security implementation",
+          "Azure Pipelines automation · test suite development"
+        ]
+      },
+      {
+        "company": "Infrrd Inc",
+        "role": "SENIOR_SOFTWARE_ENGINEER",
+        "period": "[2020-05 → 2021-11]",
+        "location": "Bangalore, India",
+        "current": false,
+        "bullets": [
+          "Python SDK for AWS automation — **60% efficiency gain**",
+          "Third-party API integration · image processing SDK",
+          "Document processing improvements"
+        ]
+      },
+      {
+        "company": "Mindtree Pvt Ltd",
+        "role": "SENIOR_SOFTWARE_ENGINEER",
+        "period": "[2017-01 → 2019-10]",
+        "location": "Bangalore, India",
+        "current": false,
+        "bullets": [
+          "Built **3D Canvas UI for Bose VB1** (Angular 8, Electron)",
+          "Mentored **50+ engineers** · technical architecture leadership",
+          "BLE Mesh development for indoor localization"
+        ]
+      }
+    ]
+  },
+  "skills": {
+    "command": "ls skills/ --proficiency",
+    "columns": [
+      {
+        "header": "/backend",
+        "rows": [
+          { "name": "Java & Spring Boot", "pct": 95 },
+          { "name": "RESTful APIs", "pct": 95 },
+          { "name": "Microservices", "pct": 90 },
+          { "name": "Node.js & Python", "pct": 85 }
+        ]
+      },
+      {
+        "header": "/frontend",
+        "rows": [
+          { "name": "Angular 2–16", "pct": 95 },
+          { "name": "RxJS", "pct": 90 },
+          { "name": "React & TypeScript", "pct": 88 },
+          { "name": "UI/UX Optimization", "pct": 85 }
+        ]
+      },
+      {
+        "header": "/cloud-devops",
+        "rows": [
+          { "name": "Build Optimization", "pct": 92 },
+          { "name": "Azure DevOps", "pct": 90 },
+          { "name": "Docker & CI/CD", "pct": 88 },
+          { "name": "AWS", "pct": 85 }
+        ]
+      },
+      {
+        "header": "/security",
+        "rows": [
+          { "name": "OSS Vulnerability", "pct": 90 },
+          { "name": "Security Remediation", "pct": 90 },
+          { "name": "License Compliance", "pct": 88 },
+          { "name": "OWASP", "pct": 85 }
+        ]
+      }
+    ],
+    "footerLabel": "/ai-assisted-dev",
+    "footerText": "→ Claude/Cursor-based workflows · custom Claude skills · org-wide automation tooling"
+  },
+  "ai": {
+    "command": "./ai-leadership --status",
+    "badge": "AI-NATIVE",
+    "heading": "AI-ASSISTED ENGINEERING LEADERSHIP",
+    "intro": [
+      "# Driving Claude & AI automation adoption across the org —",
+      "# turning individual workflows into reusable engineering leverage."
+    ],
+    "cards": [
+      {
+        "label": "[skill] pr-review-council",
+        "copy": "Multi-perspective automated review on every pull request, org-wide."
+      },
+      {
+        "label": "[skill] epic-delivery",
+        "copy": "Takes an epic from breakdown through delivery with AI in the loop."
+      },
+      {
+        "label": "[skill] worktree",
+        "copy": "Parallel JIRA deliveries without branch collisions."
+      },
+      {
+        "label": "[skill] time-log",
+        "copy": "Automates time-log capture end to end. Zero manual overhead."
+      }
+    ],
+    "highlight": {
+      "status": "PROCESS RUNNING · IN PROGRESS",
+      "title": "org-level project-wide memory system for Claude",
+      "copy": "A shared memory layer so AI carries context across projects and teams."
+    }
+  },
+  "projects": {
+    "command": "ls -la projects/",
+    "rows": [
+      {
+        "idx": "001",
+        "name": "annie-ui-platform",
+        "desc": "Next-gen UI platform · Angular 16, TypeScript, RxJS, Spring Boot",
+        "date": "2023—NOW",
+        "highlight": false
+      },
+      {
+        "idx": "002",
+        "name": "security-framework",
+        "desc": "8 integrated tools · OWASP, Semgrep, TruffleHog, Snyk, SonarQube",
+        "date": "2023—2024",
+        "highlight": false
+      },
+      {
+        "idx": "003",
+        "name": "build-optimization",
+        "desc": "70% faster builds · 20–30 min → <10 min",
+        "date": "2023",
+        "highlight": false
+      },
+      {
+        "idx": "004",
+        "name": "failed-page-handler",
+        "desc": "Document processing with failure recovery · Java, Spring Boot, Angular",
+        "date": "2023",
+        "highlight": false
+      },
+      {
+        "idx": "005",
+        "name": "angular-modernization",
+        "desc": "Angular 8 → 14 migration · zero downtime, backward compatible",
+        "date": "2022—2023",
+        "highlight": false
+      },
+      {
+        "idx": "006",
+        "name": "aws-automation-sdk",
+        "desc": "Python + Boto3 · 60% manual work reduction",
+        "date": "2020—2021",
+        "highlight": false
+      },
+      {
+        "idx": "007",
+        "name": "claude-automation-skills",
+        "desc": "PR review council, epic delivery, worktrees, time-log + org memory system (WIP)",
+        "date": "ONGOING",
+        "highlight": true
+      }
+    ]
+  },
+  "contact": {
+    "command": "ping shinigami-rog --all-channels",
+    "headingLines": ["Let's build", "something"],
+    "channels": [
+      {
+        "label": "EMAIL",
+        "value": "sivaguru94@gmail.com",
+        "href": "mailto:sivaguru94@gmail.com",
+        "accent": true,
+        "external": false
+      },
+      {
+        "label": "LINKEDIN",
+        "value": "/in/sivaguru-ravi ↗",
+        "href": "https://www.linkedin.com/in/sivaguru-ravi/",
+        "accent": true,
+        "external": true
+      },
+      {
+        "label": "WEB",
+        "value": "shinigami-rog.cc ↗",
+        "href": "https://shinigami-rog.cc",
+        "accent": true,
+        "external": true
+      },
+      {
+        "label": "LOCATION",
+        "value": "Bangalore, India",
+        "href": null,
+        "accent": false,
+        "external": false
+      }
+    ]
+  },
+  "footer": {
+    "line": "© 2026 SIVAGURU_RAVI · shinigami-rog · uptime 9y+ · exit 0",
+    "hint": "[T] toggle theme"
+  },
+  "shell": {
+    "skillsArt": [
+      "java-spring-boot ██████████ 95",
+      "angular-2-16     ██████████ 95",
+      "restful-apis     ██████████ 95",
+      "build-optim      █████████░ 92",
+      "microservices    █████████░ 90",
+      "rxjs             █████████░ 90",
+      "…full list at ./skills — scroll up"
+    ],
+    "experienceLog": [
+      "[2023-08 → NOW ] Infrrd Inc — Technical Specialist",
+      "[2021-12 → 2023] Philips India — Software Technologist 1",
+      "[2020-05 → 2021] Infrrd Inc — Senior Software Engineer",
+      "[2017-01 → 2019] Mindtree — Senior Software Engineer"
+    ],
+    "projectsList": [
+      "annie-ui-platform      2023—NOW",
+      "security-framework     2023—2024 (8 tools)",
+      "build-optimization     2023 (70% faster)",
+      "angular-modernization  2022—2023 (zero downtime)",
+      "aws-automation-sdk     2020—2021 (60% less manual work)",
+      "claude-automation-skills  ONGOING"
+    ],
+    "aiLines": [
+      "org-wide Claude skills:",
+      "  pr-review-council · epic-delivery · worktree · time-log",
+      "in progress: org-level project-wide memory system for Claude"
+    ]
+  }
+}

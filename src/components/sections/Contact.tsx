@@ -1,55 +1,49 @@
+import { getMe } from "@/content";
 import { CommandLine } from "../common/CommandLine";
 import { OpenShellButton } from "../shell/OpenShellButton";
 import { Reveal } from "../anim/Reveal";
 import styles from "./Contact.module.css";
 
-export function Contact() {
+export async function Contact() {
+  const me = await getMe();
   return (
     <section id="contact" className={styles.section}>
       <div className={styles.inner}>
         <Reveal className={styles.cmd}>
-          <CommandLine text="ping shinigami-rog --all-channels" />
+          <CommandLine text={me.contact.command} />
         </Reveal>
         <Reveal as="h2" className={styles.heading}>
-          Let&apos;s build
+          {me.contact.headingLines[0]}
           <br />
-          something
+          {me.contact.headingLines[1]}
           <span className={styles.underscore} aria-hidden="true">
             _
           </span>
         </Reveal>
 
         <Reveal delay={80} className={styles.rows}>
-          <a href="mailto:sivaguru94@gmail.com" className={styles.rowLink}>
-            <span className={styles.label}>EMAIL</span>
-            <span className={styles.accentValue}>sivaguru94@gmail.com</span>
-          </a>
-          <a href="tel:+919020708677" className={styles.rowLink}>
-            <span className={styles.label}>PHONE</span>
-            <span>+91 90207 08677</span>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/sivaguru-ravi/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.rowLink}
-          >
-            <span className={styles.label}>LINKEDIN</span>
-            <span className={styles.accentValue}>/in/sivaguru-ravi ↗</span>
-          </a>
-          <a
-            href="https://shinigami-rog.cc"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.rowLink}
-          >
-            <span className={styles.label}>WEB</span>
-            <span className={styles.accentValue}>shinigami-rog.cc ↗</span>
-          </a>
-          <div className={styles.row}>
-            <span className={styles.label}>LOCATION</span>
-            <span>Bangalore, India</span>
-          </div>
+          {me.contact.channels.map((ch) =>
+            ch.href ? (
+              <a
+                key={ch.label}
+                href={ch.href}
+                className={styles.rowLink}
+                {...(ch.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
+                <span className={styles.label}>{ch.label}</span>
+                <span className={ch.accent ? styles.accentValue : undefined}>
+                  {ch.value}
+                </span>
+              </a>
+            ) : (
+              <div key={ch.label} className={styles.row}>
+                <span className={styles.label}>{ch.label}</span>
+                <span>{ch.value}</span>
+              </div>
+            ),
+          )}
         </Reveal>
 
         <Reveal delay={120}>

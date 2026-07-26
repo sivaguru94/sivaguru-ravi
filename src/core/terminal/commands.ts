@@ -1,9 +1,11 @@
 import type { Command, CommandContext } from "./types";
 import { prefsStore, resolveOnOff } from "../theme";
+import { me } from "../../content";
 
 /*
- * Command registry — outputs are VERBATIM from the signed-off prototype
- * (design/handoff, class Component `commands`). Do not editorialize.
+ * Command registry — outputs follow the signed-off prototype, with personal
+ * details sourced from src/content/me.json (single source of truth).
+ * Author overrides 2026-07-26: `stock` command and phone number removed.
  */
 
 const run = (
@@ -24,7 +26,6 @@ export const commands: Record<string, Command> = {
       "  ai           AI-assisted engineering work",
       "  contact      how to reach me",
       "  resume       download resume (PDF)",
-      "  stock        the november 2025 story",
       "  theme        toggle dark/light",
       "  clear        clear the terminal",
       "",
@@ -37,8 +38,8 @@ export const commands: Record<string, Command> = {
   whoami: {
     man: "print who shinigami-rog is",
     run: () => [
-      "Sivaguru Ravi — Senior SDE, Bangalore, India",
-      "alias: shinigami-rog  ·  web: shinigami-rog.cc",
+      `${me.identity.firstName} ${me.identity.lastName} — ${me.identity.shortTitle}, ${me.identity.location}`,
+      `alias: ${me.identity.alias}  ·  web: ${me.identity.domain}`,
       "9+ years architecting enterprise-grade applications.",
       "Java Spring Boot · Angular · AI-assisted engineering.",
     ],
@@ -46,64 +47,31 @@ export const commands: Record<string, Command> = {
 
   skills: {
     man: "list top skills with levels",
-    run: () => [
-      "java-spring-boot ██████████ 95",
-      "angular-2-16     ██████████ 95",
-      "restful-apis     ██████████ 95",
-      "build-optim      █████████░ 92",
-      "microservices    █████████░ 90",
-      "rxjs             █████████░ 90",
-      "…full list at ./skills — scroll up",
-    ],
+    run: () => [...me.shell.skillsArt],
   },
 
   experience: {
     man: "print work history",
-    run: () => [
-      "[2023-08 → NOW ] Infrrd Inc — Technical Specialist",
-      "[2021-12 → 2023] Philips India — Software Technologist 1",
-      "[2020-05 → 2021] Infrrd Inc — Senior Software Engineer",
-      "[2017-01 → 2019] Mindtree — Senior Software Engineer",
-    ],
+    run: () => [...me.shell.experienceLog],
   },
 
   projects: {
     man: "list featured projects",
-    run: () => [
-      "annie-ui-platform      2023—NOW",
-      "security-framework     2023—2024 (8 tools)",
-      "build-optimization     2023 (70% faster)",
-      "angular-modernization  2022—2023 (zero downtime)",
-      "aws-automation-sdk     2020—2021 (60% less manual work)",
-      "claude-automation-skills  ONGOING",
-    ],
+    run: () => [...me.shell.projectsList],
   },
 
   ai: {
     man: "AI-assisted engineering work",
-    run: () => [
-      "org-wide Claude skills:",
-      "  pr-review-council · epic-delivery · worktree · time-log",
-      "in progress: org-level project-wide memory system for Claude",
-    ],
+    run: () => [...me.shell.aiLines],
   },
 
   contact: {
     man: "ways to reach Sivaguru",
     run: () => [
-      "email     sivaguru94@gmail.com",
-      "web       shinigami-rog.cc",
-      "phone     +91 90207 08677",
-      "linkedin  linkedin.com/in/sivaguru-ravi",
-      "location  Bangalore, India",
-    ],
-  },
-
-  stock: {
-    man: "the november 2025 story",
-    run: () => [
-      "november 2025: awarded stock options for exceptional",
-      "technical leadership at Infrrd. still compiling. 🟢",
+      `email     ${me.identity.email}`,
+      `web       ${me.identity.domain}`,
+      `linkedin  linkedin.com${me.identity.linkedin.label.replace(" ↗", "")}`,
+      `location  ${me.identity.location}`,
     ],
   },
 

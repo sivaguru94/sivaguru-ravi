@@ -1,18 +1,20 @@
+import { getMe } from "@/content";
 import { BladeMark } from "./logos/BladeMark";
 import styles from "./Footer.module.css";
 
 /* Server component — static content. The prototype's "view modern variant"
  * link is dropped in production (plan §6). */
-export function Footer() {
+export async function Footer() {
+  const me = await getMe();
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <span className={styles.brand}>
-          <BladeMark size={14} fill="var(--dim)" />© 2026 SIVAGURU_RAVI ·
-          shinigami-rog · uptime 9y+ · exit 0
+          <BladeMark size={14} fill="var(--dim)" />
+          {me.footer.line}
         </span>
         <span className={styles.hints}>
-          <span>[T] toggle theme</span>
+          <span>{me.footer.hint}</span>
         </span>
       </div>
     </footer>

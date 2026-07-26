@@ -1,3 +1,4 @@
+import { getMe } from "@/content";
 import { BladeMark } from "../logos/BladeMark";
 import { TypedCommand } from "../anim/TypedCommand";
 import { StatsWindow } from "./StatsWindow";
@@ -10,7 +11,8 @@ import styles from "./Hero.module.css";
  */
 const delay = (i: number) => ({ animationDelay: `${300 + i * 130}ms` });
 
-export function Hero() {
+export async function Hero() {
+  const me = await getMe();
   return (
     <header className={styles.hero}>
       {/* watermark: prototype hardcodes the dark accent green in both themes */}
@@ -21,7 +23,7 @@ export function Hero() {
       <div className={`${styles.cmd} ${styles.anim}`} style={delay(0)}>
         <span className={styles.prompt}>$</span>{" "}
         <span data-hero-type>
-          <TypedCommand text="whoami --verbose" speed={45} mode="load" />
+          <TypedCommand text={me.hero.command} speed={45} mode="load" />
         </span>
         <span className={styles.cmdCursor} aria-hidden="true">
           ▊
@@ -29,33 +31,38 @@ export function Hero() {
       </div>
 
       <h1 className={`${styles.title} ${styles.anim}`} style={delay(1)}>
-        Sivaguru
+        {me.identity.firstName}
         <br />
-        Ravi<span className={styles.underscore}>_</span>
+        {me.identity.lastName}
+        <span className={styles.underscore}>_</span>
       </h1>
 
       <div className={`${styles.tagline} ${styles.anim}`} style={delay(2)}>
-        &gt; SENIOR SDE · 9+ YRS · JAVA SPRING BOOT · ANGULAR
+        &gt; {me.hero.tagline}
         <br />
-        &gt; a.k.a. <span className={styles.alias}>shinigami-rog</span> ·
-        shinigami-rog.cc
+        &gt; a.k.a. <span className={styles.alias}>{me.identity.alias}</span> ·{" "}
+        {me.identity.domain}
       </div>
 
       <p className={`${styles.comment} ${styles.anim}`} style={delay(3)}>
-        # Architecting enterprise-grade applications for 9+ years.
-        <br /># Recognized with stock options (Nov 2025) for technical
-        leadership.
-        <br /># Currently building the org&apos;s AI-assisted engineering
-        playbook.
+        {me.hero.comments.map((line, i) => (
+          <span key={i}>
+            {i > 0 && <br />}
+            {line}
+          </span>
+        ))}
       </p>
 
       <div className={`${styles.actions} ${styles.anim}`} style={delay(4)}>
-        <a href="#contact" className={styles.primary}>
-          ./contact --now
-        </a>
-        <a href="#work" className={styles.secondary}>
-          cat experience.log
-        </a>
+        {me.hero.actions.map((a) => (
+          <a
+            key={a.href}
+            href={a.href}
+            className={a.primary ? styles.primary : styles.secondary}
+          >
+            {a.label}
+          </a>
+        ))}
       </div>
 
       <StatsWindow className={styles.anim} style={delay(5)} />

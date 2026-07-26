@@ -1,22 +1,17 @@
+import { getMe } from "@/content";
 import { CountUp } from "../anim/CountUp";
 import styles from "./StatsWindow.module.css";
 
-const STATS = [
-  { to: 9, suffix: "+", label: "YRS_EXPERIENCE" },
-  { to: 50, suffix: "+", label: "ENGINEERS_MENTORED" },
-  { to: 70, suffix: "%", label: "FASTER_BUILDS" },
-  { to: 8, suffix: "", label: "SECURITY_TOOLS" },
-] as const;
-
 /* Framed stats terminal window. Count-ups animate on scroll-in; final
  * geometry is reserved with min-width in ch (zero CLS). */
-export function StatsWindow({
+export async function StatsWindow({
   className,
   style,
 }: {
   className?: string;
   style?: React.CSSProperties;
 }) {
+  const me = await getMe();
   return (
     <div
       className={className ? `${styles.window} ${className}` : styles.window}
@@ -28,12 +23,10 @@ export function StatsWindow({
           <span className={styles.yellow} />
           <span className={styles.green} />
         </span>
-        <span className={styles.label}>
-          shinigami-rog: ~/stats — $ stats --summary
-        </span>
+        <span className={styles.label}>{me.hero.statsTitle}</span>
       </div>
       <div className={styles.grid}>
-        {STATS.map((s) => (
+        {me.hero.stats.map((s) => (
           <div key={s.label} className={styles.cell}>
             <div
               className={styles.numeral}

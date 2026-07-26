@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import { me } from "@/content";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Scanlines } from "@/components/Scanlines";
 import "@/styles/tokens.css";
@@ -12,9 +13,8 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-const TITLE = "Sivaguru Ravi (shinigami-rog) — Senior SDE";
-const DESCRIPTION =
-  "Senior SDE · 9+ yrs · Java Spring Boot · Angular. Architecting enterprise-grade applications and building the org's AI-assisted engineering playbook. a.k.a. shinigami-rog.";
+const TITLE = me.seo.title;
+const DESCRIPTION = me.seo.description;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://shinigami-rog.cc"),
@@ -42,12 +42,12 @@ export const metadata: Metadata = {
 const personJsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Sivaguru Ravi",
-  alternateName: "shinigami-rog",
-  jobTitle: "Senior Software Development Engineer",
-  url: "https://shinigami-rog.cc",
-  email: "mailto:sivaguru94@gmail.com",
-  sameAs: ["https://www.linkedin.com/in/sivaguru-ravi/"],
+  name: `${me.identity.firstName} ${me.identity.lastName}`,
+  alternateName: me.identity.alias,
+  jobTitle: me.identity.jobTitle,
+  url: `https://${me.identity.domain}`,
+  email: `mailto:${me.identity.email}`,
+  sameAs: [me.identity.linkedin.url],
   address: {
     "@type": "PostalAddress",
     addressLocality: "Bangalore",

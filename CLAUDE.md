@@ -51,9 +51,21 @@ overrides them.
 ## Privacy
 
 `docs-private/` is gitignored and must NEVER be committed — it holds personal
-notes with comp-sensitive content. The published phone number, email
-(`sivaguru94@gmail.com`), and stock-option story are deliberate (author
-confirmed 2026-07-26; design wins).
+notes with comp-sensitive content.
+
+**Author overrides (2026-07-26, supersede the design):** the phone number and
+the stock-option story are REMOVED site-wide (sections, shell commands, deep
+links). Do not reintroduce them from the design reference. The published
+email (`sivaguru94@gmail.com`) stays. Note: the downloadable resume PDF
+still contains the phone number (author's own file — flagged, their call).
+
+## Content
+
+ALL personal/section/shell copy lives in `src/content/me.json` — the single
+source of truth, typed and exposed via `getMe()` in `src/content/index.ts`.
+Server components `await getMe()`; when content moves to a DB/CMS, only
+`index.ts` changes. Never hardcode copy in components; the only supported
+markup in content strings is `**bold**` (rendered by `common/Rich.tsx`).
 
 ## Commands
 
