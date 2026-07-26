@@ -36,12 +36,14 @@ mkdir -p /opt/shinigami-rog/certs && cd /opt/shinigami-rog
 cd /opt/shinigami-rog && docker compose pull && docker compose up -d
 curl -k https://localhost/healthz   # → ok
 ```
-- GitHub repo → Settings:
-  - **Variables:** `DEPLOY_ENABLED=true`
-  - **Secrets:** `DEPLOY_HOST` (VM IP), `DEPLOY_USER` (`deploy`),
-    `DEPLOY_SSH_KEY` (private key whose public half is in
-    `/home/deploy/.ssh/authorized_keys`, ideally with
-    `command="cd /opt/shinigami-rog && ..."` restriction)
+- GitHub repo → Settings (already set 2026-07-26: `DEPLOY_SSH_KEY`,
+  `DEPLOY_USER=deploy`; private key backup in gitignored `docs-private/`):
+  - **Variables:** `DEPLOY_ENABLED=true` (set last, flips CD on)
+  - **Secrets:** `DEPLOY_HOST` (VM public IP)
+- The CI deploy public key for `/home/deploy/.ssh/authorized_keys`:
+  ```
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF6GF9oU02pmhnTOsdTqhNzeh4MMClPcK2/LpfekZe54 github-actions-deploy@shinigami-rog
+  ```
 - From then on: merge to `master` → build → Trivy scan → GHCR → SSH deploy →
   prod smoke.
 
