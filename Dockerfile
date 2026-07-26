@@ -13,7 +13,7 @@ ENV NEXT_OUTPUT=export
 RUN npm run build
 
 # runtime: runs as uid 101, listens on 8080, ~no attack surface
-FROM nginxinc/nginx-unprivileged:1.29-alpine
+FROM nginxinc/nginx-unprivileged:1.31-alpine
 # base images lag Alpine security releases — pull in patched packages
 # (first Trivy run caught 35 fixable HIGH/CRITICAL in the stale base)
 USER root
