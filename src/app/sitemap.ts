@@ -6,7 +6,7 @@ export const dynamic = "force-static"; // required for output:'export'
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://shinigami-rog.cc",
+      url: "https://shinigami-rog.cc/sivaguru-ravi",
       changeFrequency: "monthly",
       priority: 1,
     },

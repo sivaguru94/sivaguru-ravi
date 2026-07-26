@@ -8,7 +8,7 @@ test.describe("assets + SEO (M7)", () => {
     );
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      "https://shinigami-rog.cc",
+      "https://shinigami-rog.cc/sivaguru-ravi",
     );
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       "content",
@@ -65,7 +65,7 @@ test.describe("assets + SEO (M7)", () => {
     await expect(page.getByText("404: command not found")).toBeVisible();
     await expect(page.getByRole("link", { name: "cd ~" })).toHaveAttribute(
       "href",
-      "/",
+      "/sivaguru-ravi",
     );
   });
 
@@ -77,7 +77,13 @@ test.describe("assets + SEO (M7)", () => {
     expect(robots).toContain("noindex");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      "https://shinigami-rog.cc",
+      "https://shinigami-rog.cc/sivaguru-ravi",
     );
+  });
+
+  test("root redirects to /sivaguru-ravi", async ({ page }) => {
+    await page.goto("/");
+    await expect(page).toHaveURL(/\/sivaguru-ravi$/);
+    await expect(page.locator("h1")).toContainText("Sivaguru");
   });
 });

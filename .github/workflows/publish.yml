@@ -61,11 +61,13 @@ jobs:
         run: |
           sleep 5
           curl -fsS https://shinigami-rog.cc/healthz
-          H=$(curl -fsSI https://shinigami-rog.cc/)
+          # / must 301 to the landing page
+          test "$(curl -s -o /dev/null -w '%{http_code}' https://shinigami-rog.cc/)" = "301"
+          H=$(curl -fsSI https://shinigami-rog.cc/sivaguru-ravi)
           echo "$H" | grep -i "x-content-type-options: nosniff"
           echo "$H" | grep -i "frame-ancestors 'none'"
           echo "$H" | grep -i "strict-transport-security"
-          curl -fsS https://shinigami-rog.cc/ | grep -q "SIVAGURU"
+          curl -fsSL https://shinigami-rog.cc/ | grep -q "SIVAGURU"
           curl -fsSI https://shinigami-rog.cc/Sivaguru_Ravi_Resume.pdf | grep -i "content-type: application/pdf"
           curl -fsS https://shinigami-rog.cc/sivaguru-ravi/whoami >/dev/null
           echo "smoke OK"

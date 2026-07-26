@@ -20,10 +20,10 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://shinigami-rog.cc"),
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/sivaguru-ravi" },
   openGraph: {
     type: "website",
-    url: "https://shinigami-rog.cc",
+    url: "https://shinigami-rog.cc/sivaguru-ravi",
     siteName: "shinigami-rog",
     title: TITLE,
     description: DESCRIPTION,

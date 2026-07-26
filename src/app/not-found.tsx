@@ -47,7 +47,7 @@ export default function NotFound() {
         the path you requested does not exist in this shell.
       </p>
       <Link
-        href="/"
+        href="/sivaguru-ravi"
         style={{
           marginTop: 20,
           display: "inline-block",
