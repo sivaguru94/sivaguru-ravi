@@ -1,7 +1,7 @@
 # Static-export + unprivileged nginx (deploy-plan.md §2): no Node.js in the
 # final image. Base tags kept current by Dependabot (docker ecosystem).
 
-FROM node:20-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json ./
