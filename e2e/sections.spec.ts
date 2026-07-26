@@ -30,10 +30,11 @@ test.describe("sections (M2 pixel pass)", () => {
     ).toBeVisible();
   });
 
-  test("work: 4 cards, current role accented", async ({ page }) => {
+  test("work: 5 cards, current role accented", async ({ page }) => {
     await page.goto("/");
     const cards = page.locator("#work h3");
-    await expect(cards).toHaveCount(4);
+    await expect(cards).toHaveCount(5);
+    await expect(page.locator("#work")).toContainText("PathPartner Technology");
     await expect(cards.first()).toContainText("Infrrd Inc");
     await expect(cards.first()).toContainText("TECHNICAL_SPECIALIST");
     await expect(page.locator("#work")).toContainText("[2023-08 → PRESENT]");

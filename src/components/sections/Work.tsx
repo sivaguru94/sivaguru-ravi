@@ -15,7 +15,7 @@ export async function Work() {
         {me.work.jobs.map((job, i) => (
           <Reveal
             key={i}
-            delay={[0, 60, 90, 120][i]}
+            delay={[0, 60, 90, 120, 150][i]}
             className={
               job.current ? `${styles.card} ${styles.current}` : styles.card
             }

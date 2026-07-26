@@ -84,6 +84,18 @@
         ]
       },
       {
+        "company": "PathPartner Technology",
+        "role": "SENIOR_SOFTWARE_ENGINEER",
+        "period": "[2019-12 → 2020-05]",
+        "location": "Bangalore, India",
+        "current": false,
+        "bullets": [
+          "IoT / embedded R&D — **BLE Mesh telemetry** (Zephyr, Nordic Mesh SDK)",
+          "Near-ultrasonic **FSK+CRC encoder-decoder**",
+          "Compiler/processor optimization · Python audio tooling vs Dolby standards"
+        ]
+      },
+      {
         "company": "Mindtree Pvt Ltd",
         "role": "SENIOR_SOFTWARE_ENGINEER",
         "period": "[2017-01 → 2019-10]",
@@ -278,6 +290,7 @@
       "[2023-08 → NOW ] Infrrd Inc — Technical Specialist",
       "[2021-12 → 2023] Philips India — Software Technologist 1",
       "[2020-05 → 2021] Infrrd Inc — Senior Software Engineer",
+      "[2019-12 → 2020] PathPartner — Senior Software Engineer",
       "[2017-01 → 2019] Mindtree — Senior Software Engineer"
     ],
     "projectsList": [
