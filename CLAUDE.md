@@ -71,6 +71,14 @@ confirmed 2026-07-26; design wins).
   CI after build; fails if the lazy shell/games ever leak into first-load)
 - `node scripts/gen-favicon.mjs` — regenerate favicon.ico if icon.svg changes
 
+## Known trap: npm lockfile desync
+
+npm 11 drops optional wasm branches (`@emnapi/*`, `@napi-rs/*`) from the
+lockfile when installing new packages into an existing `node_modules` —
+`npm ci` then fails in CI while working locally (cache masks it). After
+adding ANY dependency: `rm -rf node_modules package-lock.json && npm install`,
+then verify with a clean `npm ci` before pushing.
+
 ## Git / delivery
 
 - Branch `next-rewrite` is the working branch; `master` is production
