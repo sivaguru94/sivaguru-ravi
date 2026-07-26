@@ -1,0 +1,112 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.wordmark {
+  color: var(--accent);
+  text-shadow: var(--glow);
+}
+
+.prompt {
+  color: var(--dim);
+}
+
+.cursor {
+  animation: blink 1.2s infinite;
+}
+
+.menu {
+  display: none;
+  gap: 22px;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.link {
+  transition: color 0.2s;
+}
+
+.link:hover,
+.link[data-active] {
+  color: var(--accent);
+}
+
+.toggle {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 7px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+@media (min-width: 761px) {
+  .menu {
+    display: flex;
+  }
+}
+
+@media (max-width: 760px) {
+  .inner {
+    height: auto;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+  }
+  .menu {
+    display: flex;
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 8px 0 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .menu::-webkit-scrollbar {
+    display: none;
+  }
+  .menu .link {
+    padding: 6px 0;
+    white-space: nowrap;
+  }
+}
+
+@media (pointer: coarse) {
+  .nav a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}

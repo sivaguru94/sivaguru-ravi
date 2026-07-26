@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Scanlines } from "@/components/Scanlines";
 import "@/styles/tokens.css";
 import "@/styles/globals.css";
 
@@ -42,7 +44,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={jetbrainsMono.variable}>
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
-        {children}
+        <ThemeProvider>
+          <Scanlines />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

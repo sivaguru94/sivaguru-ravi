@@ -22,7 +22,9 @@ test.describe("boot smoke", () => {
     );
     expect(bg).toBe("rgb(5, 7, 5)");
 
-    await expect(page.getByText("shinigami-rog")).toBeVisible();
+    await expect(
+      page.locator("main").getByText("shinigami-rog"),
+    ).toBeVisible();
     expect(errors).toEqual([]);
   });
 
