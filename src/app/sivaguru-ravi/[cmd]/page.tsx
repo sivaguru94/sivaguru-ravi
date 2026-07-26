@@ -22,7 +22,7 @@ export function generateStaticParams() {
 
 export const metadata: Metadata = {
   robots: { index: false },
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/sivaguru-ravi" },
 };
 
 export default async function CommandPage({

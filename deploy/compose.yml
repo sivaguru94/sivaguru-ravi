@@ -1,0 +1,24 @@
+# VPS runtime (deploy-plan.md §2). Lives at /opt/shinigami-rog on the server
+# next to ./certs (Cloudflare origin cert) and this repo's tls.conf.
+#   TAG=<sha> docker compose pull && TAG=<sha> docker compose up -d
+services:
+  web:
+    image: ghcr.io/sivaguru94/shinigami-rog:${TAG:-latest}
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+    ports:
+      - "443:8443"
+    volumes:
+      - ./tls.conf:/etc/nginx/conf.d/tls.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    healthcheck:
+      test:
+        ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

@@ -14,8 +14,9 @@ import { gzipSync } from "node:zlib";
  * modern browsers never fetch them. */
 const BUDGET_GZ = 165_000; // bytes, gzipped
 
+/* the landing page lives at /sivaguru-ravi (root is a redirect stub) */
 const html = await readFile(
-  new URL("../.next/server/app/index.html", import.meta.url),
+  new URL("../.next/server/app/sivaguru-ravi.html", import.meta.url),
   "utf8",
 );
 const files = [

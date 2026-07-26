@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+.git
+.github
+e2e
+test-results
+playwright-report
+design
+docs-private
+scratchpad
+*.md
+plan*.md
+deploy/compose.yml
+deploy/tls.conf
+Dockerfile
+.dockerignore
