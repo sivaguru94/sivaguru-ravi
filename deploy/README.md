@@ -36,44 +36,25 @@ The free shape is **`VM.Standard.A1.Flex`** (Ampere ARM, up to 4 OCPU /
    **443**. (22 is already open by default.)
 5. SSH in: `ssh ubuntu@<PUBLIC_IP>`
 
-## 2. Harden + Docker (paste as one block, as ubuntu → sudo)
+## 2. Harden + Docker — scripted (deploy/scripts/)
 
-**GOTCHA — OCI Ubuntu images ship restrictive iptables rules** on top of the
-security list; without the iptables lines below, 443 stays "connection
-refused" even though the cloud rule is open.
+All server-side steps are idempotent scripts in `deploy/scripts/`. On the VM:
 
 ```bash
-sudo -s <<'EOF'
-set -e
-# packages + docker
-apt-get update
-apt-get install -y fail2ban unattended-upgrades netfilter-persistent
-curl -fsSL https://get.docker.com | sh
-
-# open 443 in the image's baked-in iptables (OCI gotcha)
-iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
-netfilter-persistent save
-
-# deploy user (CI ssh target)
-adduser --disabled-password --gecos "" deploy
-usermod -aG docker deploy
-mkdir -p /home/deploy/.ssh
-echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF6GF9oU02pmhnTOsdTqhNzeh4MMClPcK2/LpfekZe54 github-actions-deploy@shinigami-rog" > /home/deploy/.ssh/authorized_keys
-chmod 700 /home/deploy/.ssh && chmod 600 /home/deploy/.ssh/authorized_keys
-chown -R deploy:deploy /home/deploy/.ssh
-
-# ssh hardening
-printf 'PasswordAuthentication no\nPermitRootLogin no\n' > /etc/ssh/sshd_config.d/hardening.conf
-systemctl restart ssh
-
-# app directory
-mkdir -p /opt/shinigami-rog/certs
-cd /opt/shinigami-rog
-curl -fsSLo compose.yml https://raw.githubusercontent.com/sivaguru94/sivaguru-ravi/master/deploy/compose.yml
-curl -fsSLo tls.conf   https://raw.githubusercontent.com/sivaguru94/sivaguru-ravi/master/deploy/tls.conf
-chown -R deploy:deploy /opt/shinigami-rog
-EOF
+curl -fsSLO https://raw.githubusercontent.com/sivaguru94/sivaguru-ravi/master/deploy/scripts/setup-server.sh
+curl -fsSLO https://raw.githubusercontent.com/sivaguru94/sivaguru-ravi/master/deploy/scripts/setup-tailscale.sh
+curl -fsSLO https://raw.githubusercontent.com/sivaguru94/sivaguru-ravi/master/deploy/scripts/first-deploy.sh
+sudo bash setup-server.sh      # docker, iptables-443 (OCI gotcha), deploy
+                               # user + CI key, ssh hardening, /opt app dir
+sudo bash setup-tailscale.sh   # joins tailnet as 'oci-shinigami' with
+                               # Tailscale SSH (approve the printed URL)
+# ...install Cloudflare origin certs (§3.5)...
+sudo bash first-deploy.sh      # pull image, start, verify healthz
 ```
+
+Once `setup-tailscale.sh` has run and the node is approved, Claude can reach
+the VM directly (`ssh ubuntu@oci-shinigami` over the tailnet) and finish
+cert installation / first deploy / diagnostics remotely.
 
 ## 3. Cloudflare (free plan)
 
