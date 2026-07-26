@@ -1,0 +1,71 @@
+name: Publish
+
+# Build → scan → push the arm64 nginx image on every master push; deploy to
+# the VPS only once the repo variable DEPLOY_ENABLED=true and SSH secrets
+# exist (deploy-plan.md §4). PRs are gated by ci.yml — this never runs there.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/shinigami-rog
+
+jobs:
+  image:
+    # native arm64 build for the Oracle Ampere host — no QEMU slowness
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build image
+        run: docker build -t "$IMAGE:${{ github.sha }}" .
+      - name: Trivy scan (fail on HIGH/CRITICAL)
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest image --exit-code 1 \
+            --severity HIGH,CRITICAL --ignore-unfixed \
+            "$IMAGE:${{ github.sha }}"
+      - name: Push (sha + latest)
+        run: |
+          docker tag "$IMAGE:${{ github.sha }}" "$IMAGE:latest"
+          docker push "$IMAGE:${{ github.sha }}"
+          docker push "$IMAGE:latest"
+
+  deploy:
+    needs: image
+    if: vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          SSH_HOST: ${{ secrets.DEPLOY_HOST }}
+          SSH_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -i ~/.ssh/deploy_key "$SSH_USER@$SSH_HOST" \
+            "cd /opt/shinigami-rog && TAG=${{ github.sha }} docker compose pull && TAG=${{ github.sha }} docker compose up -d"
+      - name: Prod smoke — headers, content, resume
+        run: |
+          sleep 5
+          curl -fsS https://shinigami-rog.cc/healthz
+          H=$(curl -fsSI https://shinigami-rog.cc/)
+          echo "$H" | grep -i "x-content-type-options: nosniff"
+          echo "$H" | grep -i "frame-ancestors 'none'"
+          echo "$H" | grep -i "strict-transport-security"
+          curl -fsS https://shinigami-rog.cc/ | grep -q "SIVAGURU"
+          curl -fsSI https://shinigami-rog.cc/Sivaguru_Ravi_Resume.pdf | grep -i "content-type: application/pdf"
+          curl -fsS https://shinigami-rog.cc/sivaguru-ravi/whoami >/dev/null
+          echo "smoke OK"
