@@ -203,11 +203,12 @@ test.describe("floating shell (M5)", () => {
     await page.mouse.down();
     await page.mouse.move(b!.x + 900, b!.y + 18, { steps: 5 });
     await page.mouse.up();
-    // shrink the viewport
+    // shrink the viewport; re-clamp happens in a resize-listener state commit
     await page.setViewportSize({ width: 700, height: 500 });
-    const after = await win.boundingBox();
-    expect(after!.x + 10).toBeLessThan(700); // title bar reachable
-    expect(after!.y).toBeGreaterThanOrEqual(0);
+    await expect
+      .poll(async () => (await win.boundingBox())!.x + 10, { timeout: 3000 })
+      .toBeLessThan(700); // title bar reachable
+    expect((await win.boundingBox())!.y).toBeGreaterThanOrEqual(0);
   });
 });
 

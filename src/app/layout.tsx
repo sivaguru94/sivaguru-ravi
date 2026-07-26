@@ -12,13 +12,48 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
+const TITLE = "Sivaguru Ravi (shinigami-rog) — Senior SDE";
+const DESCRIPTION =
+  "Senior SDE · 9+ yrs · Java Spring Boot · Angular. Architecting enterprise-grade applications and building the org's AI-assisted engineering playbook. a.k.a. shinigami-rog.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://shinigami-rog.cc"),
-  title: "Sivaguru Ravi (shinigami-rog) — Senior SDE",
-  description:
-    "Senior SDE · 9+ yrs · Java Spring Boot · Angular. Architecting enterprise-grade applications and building the org's AI-assisted engineering playbook. a.k.a. shinigami-rog.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "https://shinigami-rog.cc",
+    siteName: "shinigami-rog",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/og-image.png"],
+  },
 };
+
+/* JSON-LD Person — static author-controlled data; serialized with the
+ * </script>-breakout guard so future edits stay safe (plan §7). */
+const personJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Sivaguru Ravi",
+  alternateName: "shinigami-rog",
+  jobTitle: "Senior Software Development Engineer",
+  url: "https://shinigami-rog.cc",
+  email: "mailto:sivaguru94@gmail.com",
+  sameAs: ["https://www.linkedin.com/in/sivaguru-ravi/"],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Bangalore",
+    addressCountry: "IN",
+  },
+}).replace(/</g, "\\u003c");
 
 export const viewport: Viewport = {
   themeColor: "#050705",
@@ -46,6 +81,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={jetbrainsMono.variable}>
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: personJsonLd }}
+        />
         <ThemeProvider>
           <Scanlines />
           {children}
