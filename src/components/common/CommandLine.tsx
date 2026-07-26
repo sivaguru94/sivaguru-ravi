@@ -18,7 +18,7 @@ export function CommandLine({
       <span className={styles.prompt}>$</span>{" "}
       <span data-cmd>
         <TypedCommand text={text} speed={32} mode="io" />
-      </span>
+      </span>{" "}
       <span className={styles.cursor} aria-hidden="true">
         ▊
       </span>

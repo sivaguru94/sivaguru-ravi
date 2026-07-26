@@ -15,6 +15,7 @@ export async function AiLeadership() {
           <span data-cmd>
             <TypedCommand text={me.ai.command} speed={32} mode="io" />
           </span>
+          &nbsp;
           <span className={cmdStyles.cursor} aria-hidden="true">
             ▊
           </span>

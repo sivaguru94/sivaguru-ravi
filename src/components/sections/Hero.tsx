@@ -24,7 +24,7 @@ export async function Hero() {
         <span className={styles.prompt}>$</span>{" "}
         <span data-hero-type>
           <TypedCommand text={me.hero.command} speed={45} mode="load" />
-        </span>
+        </span>{" "}
         <span className={styles.cmdCursor} aria-hidden="true">
           ▊
         </span>
