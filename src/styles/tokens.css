@@ -17,6 +17,10 @@
   --accent-soft: rgba(74, 240, 122, 0.06);
   --line: rgba(74, 240, 122, 0.16);
   --nav-bg: rgba(5, 7, 5, 0.85);
+  /* fixed nav height — anything that must clear it derives from this.
+   * <=760px the nav wraps to two rows (brand + scrolling menu) and touch
+   * targets are 44px, so it is far taller than the desktop bar. */
+  --nav-h: 56px;
 
   /* derived effect tokens — components never branch on theme in JS */
   --glow: 0 0 16px rgba(74, 240, 122, 0.45);
@@ -46,4 +50,10 @@
 
   --glow: none;
   --scanlines-opacity: 0;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --nav-h: 148px;
+  }
 }
