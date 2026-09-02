@@ -30,12 +30,20 @@
   position: relative;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 130px 24px 70px;
+  padding: calc(var(--nav-h) + 74px) 24px 70px;
   min-height: 96vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: visible;
+}
+
+/* the desktop 74px breathing room under a 56px bar would be 222px of dead
+ * space under the 148px mobile nav — keep the clearance, drop the air. */
+@media (max-width: 760px) {
+  .hero {
+    padding-top: calc(var(--nav-h) + 24px);
+  }
 }
 
 .watermark {
