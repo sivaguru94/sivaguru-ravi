@@ -21,8 +21,18 @@ command -v docker >/dev/null 2>&1 || curl -fsSL https://get.docker.com | sh
 echo "==> [3/6] firewall — open 443 in OCI's baked-in iptables"
 # OCI Ubuntu images ship restrictive iptables ON TOP of the VCN security
 # list; without this, 443 is refused even when the cloud rule is open.
-iptables -C INPUT -m state --state NEW -p tcp --dport 443 -j ACCEPT 2>/dev/null ||
-  iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
+# the ACCEPT must sit ABOVE the catch-all REJECT, whose position varies by
+# image — inserting at a hardcoded index silently lands below it (dead rule),
+# and `iptables -C` would then match that dead rule forever.
+reject_at=$(iptables -L INPUT -n --line-numbers | awk '$2=="REJECT"{print $1; exit}')
+accept_at=$(iptables -L INPUT -n --line-numbers |
+  awk '/dpt:443/ && $2=="ACCEPT"{print $1; exit}')
+if [ -z "$accept_at" ] || { [ -n "$reject_at" ] && [ "$accept_at" -gt "$reject_at" ]; }; then
+  [ -n "$accept_at" ] &&
+    iptables -D INPUT -m state --state NEW -p tcp --dport 443 -j ACCEPT 2>/dev/null || true
+  reject_at=$(iptables -L INPUT -n --line-numbers | awk '$2=="REJECT"{print $1; exit}')
+  iptables -I INPUT "${reject_at:-1}" -m state --state NEW -p tcp --dport 443 -j ACCEPT
+fi
 netfilter-persistent save
 
 echo "==> [4/6] deploy user (CI ssh target)"
@@ -42,7 +52,9 @@ systemctl restart ssh
 
 echo "==> [6/6] app directory"
 install -d -o deploy -g deploy "$APP_DIR"
-install -d -m 700 -o deploy -g deploy "$APP_DIR/certs"
+# nginx runs as uid 101 inside the container and must read the origin cert
+# and key; 700/deploy-only makes the directory untraversable for it.
+install -d -m 750 -o deploy -g 101 "$APP_DIR/certs"
 curl -fsSLo "$APP_DIR/compose.yml" "$REPO_RAW/deploy/compose.yml"
 curl -fsSLo "$APP_DIR/tls.conf" "$REPO_RAW/deploy/tls.conf"
 chown deploy:deploy "$APP_DIR/compose.yml" "$APP_DIR/tls.conf"

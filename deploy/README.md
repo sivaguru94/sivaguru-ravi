@@ -3,15 +3,29 @@
 One-time setup the author performs; CI/CD takes over afterwards
 (deploy-plan.md has the architecture).
 
-## 0. Make the GHCR image public (one click, do this first)
-github.com/sivaguru94 → **Packages** tab → `shinigami-rog` → **Package
-settings** → Danger Zone → **Change visibility → Public**.
-(New GHCR packages default to private; the VM pulls anonymously.)
+## 0. GHCR access (do this first)
+The package is **private** (author decision, 2026-09-02). The VM therefore
+needs a registry credential — a classic PAT with **`read:packages` only**:
+
+```bash
+read -rs TOKEN && ssh <VM> "echo  | sudo -u deploy docker login \
+  ghcr.io -u sivaguru94 --password-stdin" && unset TOKEN
+sudo install -d -m 700 /root/.docker            # first-deploy.sh runs as root
+sudo cp /home/deploy/.docker/config.json /root/.docker/config.json
+```
+
+If the token expires, CD fails at `docker compose pull` with a 401.
+Alternative: Packages → `shinigami-rog` → Package settings → Change
+visibility → Public, and skip the credential entirely (the image holds only
+the public site).
 
 ## 1. OCI — create the Always-Free instance
 
-The free shape is **`VM.Standard.A1.Flex`** (Ampere ARM, up to 4 OCPU /
-24 GB total). NOT `VM.Standard.E2.1.Micro` — that's x86; our image is arm64.
+The free shape is **`VM.Standard.A1.Flex`** (Ampere ARM). Oracle **halved**
+the Always-Free allowance on 2026-06-15, with no announcement: it is now
+**2 OCPU / 12 GB** total (1,500 OCPU-hours + 9,000 GB-hours per month), down
+from 4 OCPU / 24 GB. On a Pay-As-You-Go account the console will happily let
+you exceed that and bill you — set a $1 budget alert. NOT `VM.Standard.E2.1.Micro` — that's x86; our image is arm64.
 
 1. Sign up at cloud.oracle.com/free. **Home region is permanent** — pick
    `ap-hyderabad-1` or `ap-mumbai-1` (closest to Bangalore; Cloudflare's
@@ -19,7 +33,9 @@ The free shape is **`VM.Standard.A1.Flex`** (Ampere ARM, up to 4 OCPU /
 2. Menu → **Compute → Instances → Create instance**
    - Name: `shinigami-rog`
    - Image: **Canonical Ubuntu 24.04** (select **aarch64** build)
-   - Shape: **Ampere → VM.Standard.A1.Flex**, e.g. **2 OCPU / 12 GB**
+   - Shape: **Ampere → VM.Standard.A1.Flex**, **1 OCPU / 6 GB** is
+     ample for this workload (2/12 is the free ceiling)
+   - Capacity type: **On-demand** (preemptible can be reclaimed at any time)
      (half the free quota — leaves room for a second box later). Look for
      the "Always Free-eligible" badge.
    - Networking: create default VCN with a **public subnet**; **assign a

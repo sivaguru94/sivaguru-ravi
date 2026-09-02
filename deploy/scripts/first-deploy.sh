@@ -8,7 +8,11 @@ cd "$APP_DIR"
 for f in certs/origin-cert.pem certs/origin-key.pem; do
   [ -f "$f" ] || { echo "missing $f — create the Cloudflare origin cert first (runbook §3.5)"; exit 1; }
 done
-chmod 600 certs/origin-*.pem
+# nginx runs as uid 101 in the container: it needs group read, and 600 would
+# lock it out (nginx exits with BIO_new_file/Permission denied and crash-loops).
+chgrp 101 certs certs/origin-*.pem
+chmod 750 certs
+chmod 640 certs/origin-*.pem
 
 docker compose pull
 docker compose up -d
