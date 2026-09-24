@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { ScytheMark } from "../logos/ScytheMark";
+import type { PendingCmd } from "./ShellProvider";
 import { ShellBody } from "./ShellBody";
 import { getEngine, host, SECTION_FOR, shellFocus } from "./shellHost";
 import { useWindowControls } from "./useWindowControls";
@@ -9,29 +10,39 @@ import styles from "./Shell.module.css";
 
 type Props = {
   onClose: () => void;
-  initialCmd: string | null;
+  pending: PendingCmd | null;
   onConsumedCmd: () => void;
 };
 
 export default function ShellWindow({
   onClose,
-  initialCmd,
+  pending,
   onConsumedCmd,
 }: Props) {
   const winRef = useRef<HTMLDivElement>(null);
-  const { state, style, onHeadDown, onResizeDown, minimize, toggleMin, toggleMax } =
-    useWindowControls(winRef);
+  const {
+    state,
+    style,
+    onHeadDown,
+    onResizeDown,
+    minimize,
+    restore,
+    toggleMin,
+    toggleMax,
+  } = useWindowControls(winRef);
 
-  /* deep-link command: scroll to its section (if any) and run it once */
-  const consumed = useRef(false);
+  /* Deep link / resume button: run once per token, restoring the window
+   * first if it was minimized (the output would be invisible otherwise). */
+  const ranToken = useRef(-1);
   useEffect(() => {
-    if (!initialCmd || consumed.current) return;
-    consumed.current = true;
-    const section = SECTION_FOR[initialCmd.toLowerCase()];
+    if (!pending || ranToken.current === pending.token) return;
+    ranToken.current = pending.token;
+    const section = SECTION_FOR[pending.cmd.toLowerCase()];
     if (section) host.scrollToSection(section);
-    getEngine().run(initialCmd);
+    restore();
+    getEngine().run(pending.cmd);
     onConsumedCmd();
-  }, [initialCmd, onConsumedCmd]);
+  }, [pending, onConsumedCmd, restore]);
 
   /* refocus prompt on restore / maximize */
   useEffect(() => {

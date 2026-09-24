@@ -126,13 +126,77 @@ test.describe("floating shell (M5)", () => {
     await expect(input).toHaveValue("echo two");
   });
 
-  test("resume command downloads the PDF", async ({ page }) => {
+  test("resume command fills a progress bar, then downloads the PDF", async ({
+    page,
+  }) => {
     await openShell(page);
+    const downloadPromise = page.waitForEvent("download");
+    await run(page, "resume");
+
+    // the live line is painted mid-transfer, before the save fires
+    const live = page.locator("[data-term-live]");
+    await expect(live).toHaveText(/\[█*░+\]\s+\d{1,2}%/);
+
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toBe("Sivaguru_Ravi_Resume.pdf");
+
+    // …and is committed to the log full, with the real file size
+    await expect(log(page)).toContainText("download started ✓");
+    await expect(log(page)).toContainText(/\[█{18}\] 100%\s+8\.4 KB/);
+    await expect(live).toHaveCount(0);
+  });
+
+  test("resume: `clear` mid-transfer leaves no stuck bar", async ({ page }) => {
+    await openShell(page);
+    const downloadPromise = page.waitForEvent("download");
+    await run(page, "resume");
+    await expect(page.locator("[data-term-live]")).toHaveCount(1);
+    await run(page, "clear");
+    await downloadPromise;
+    await expect(page.locator("[data-term-live]")).toHaveCount(0);
+  });
+
+  test("resume: falls back to a direct save when the transfer fails", async ({
+    page,
+  }) => {
+    await openShell(page);
+    // fail the measuring fetch only; the anchor save must still go through
+    await page.route("**/Sivaguru_Ravi_Resume.pdf", (route) =>
+      ["fetch", "xhr"].includes(route.request().resourceType())
+        ? route.abort()
+        : route.continue(),
+    );
     const downloadPromise = page.waitForEvent("download");
     await run(page, "resume");
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toBe("Sivaguru_Ravi_Resume.pdf");
-    await expect(log(page)).toContainText("download started ✓");
+    await expect(log(page)).toContainText("transfer failed");
+  });
+
+  test("hero resume button opens the shell and runs `resume`", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.locator("html[data-ready]").waitFor();
+    const button = page
+      .getByRole("banner")
+      .getByRole("link", { name: "Download resume (PDF)" });
+
+    const downloadPromise = page.waitForEvent("download");
+    await button.click();
+    await expect(page.locator("[data-term-win]")).toBeVisible();
+    await expect(log(page)).toContainText("guest@shinigami-rog:~$ resume");
+    expect((await downloadPromise).suggestedFilename()).toBe(
+      "Sivaguru_Ravi_Resume.pdf",
+    );
+
+    // clicking again re-runs it rather than doing nothing
+    const second = page.waitForEvent("download");
+    await button.click();
+    await second;
+    await expect(
+      log(page).getByText("guest@shinigami-rog:~$ resume"),
+    ).toHaveCount(2);
   });
 
   test("resume PDF is served with the right content type", async ({

@@ -9,7 +9,10 @@ import styles from "./Shell.module.css";
  * The window, engine, registry, and completion live in a dynamically
  * imported chunk, fetched on first open (preloaded on launcher hover/focus).
  * Opens via launcher click, the contact button ("shell:open"), or a deep
- * link ("shell:run" with the command as detail).
+ * link / the hero's resume button ("shell:run" with the command as detail).
+ * Each "shell:run" carries a fresh token so the same command fired twice
+ * (two clicks on the resume button) runs twice, while StrictMode's repeated
+ * effect does not.
  */
 const ShellWindow = dynamic(() => import("./ShellWindow"), { ssr: false });
 
@@ -17,15 +20,21 @@ const preload = () => {
   import("./ShellWindow");
 };
 
+export type PendingCmd = { cmd: string; token: number };
+
 export function ShellProvider() {
   const [open, setOpen] = useState(false);
-  const [pendingCmd, setPendingCmd] = useState<string | null>(null);
+  const [pendingCmd, setPendingCmd] = useState<PendingCmd | null>(null);
+  const nextToken = useRef(0);
   const launcherRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onOpen = () => setOpen(true);
     const onRun = (e: Event) => {
-      setPendingCmd((e as CustomEvent<string>).detail);
+      setPendingCmd({
+        cmd: (e as CustomEvent<string>).detail,
+        token: ++nextToken.current,
+      });
       setOpen(true);
     };
     window.addEventListener("shell:open", onOpen);
@@ -46,7 +55,7 @@ export function ShellProvider() {
       {open && (
         <ShellWindow
           onClose={close}
-          initialCmd={pendingCmd}
+          pending={pendingCmd}
           onConsumedCmd={() => setPendingCmd(null)}
         />
       )}

@@ -1,5 +1,6 @@
 import { getMe } from "@/content";
 import { CountUp } from "../anim/CountUp";
+import { ResumeLink } from "../shell/ResumeLink";
 import styles from "./StatsWindow.module.css";
 
 /* Framed stats terminal window. Count-ups animate on scroll-in; final
@@ -24,6 +25,7 @@ export async function StatsWindow({
           <span className={styles.green} />
         </span>
         <span className={styles.label}>{me.hero.statsTitle}</span>
+        <ResumeLink className={styles.download} {...me.hero.statsDownload} />
       </div>
       <div className={styles.grid}>
         {me.hero.stats.map((s) => (

@@ -1,4 +1,5 @@
 import type { Command, CommandContext } from "./types";
+import { transferLine } from "./progress";
 import { prefsStore, resolveOnOff } from "../theme";
 import { me } from "../../content";
 
@@ -7,6 +8,9 @@ import { me } from "../../content";
  * details sourced from src/content/me.json (single source of truth).
  * Author overrides 2026-07-26: `stock` command and phone number removed.
  */
+
+/* display name only — the host owns the actual (constant) download path */
+const RESUME_FILE = "Sivaguru_Ravi_Resume.pdf";
 
 const run = (
   name: string,
@@ -75,14 +79,26 @@ export const commands: Record<string, Command> = {
     ],
   },
 
+  /*
+   * The only async command: it opens a live line and the host repaints it
+   * with real transfer progress until the save fires. Returned lines still
+   * land first — the live line always renders at the tail of the log.
+   */
   resume: {
     man: "download resume PDF",
     run: (_args, ctx) => {
-      ctx.host.downloadResume();
-      return [
-        "fetching resume… download started ✓",
-        "file: Sivaguru_Ravi_Resume.pdf",
-      ];
+      const bar = ctx.out.live(transferLine(0, 0));
+      ctx.host.downloadResume({
+        onProgress: (fraction, loaded) =>
+          bar.update(transferLine(fraction, loaded)),
+        onDone: (bytes) => {
+          bar.end(transferLine(1, bytes));
+          ctx.out.print([`download started ✓ — ${RESUME_FILE}`]);
+        },
+        onError: () =>
+          bar.end(`resume: transfer failed — saving ${RESUME_FILE} directly`),
+      });
+      return [`fetching ${RESUME_FILE}…`];
     },
   },
 

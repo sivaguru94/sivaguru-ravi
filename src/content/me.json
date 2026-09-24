@@ -30,6 +30,12 @@
       { "label": "cat experience.log", "href": "#work", "primary": false }
     ],
     "statsTitle": "shinigami-rog: ~/stats — $ stats --summary",
+    "statsDownload": {
+      "label": "↓ resume.pdf",
+      "aria": "Download resume (PDF)",
+      "href": "/Sivaguru_Ravi_Resume.pdf",
+      "file": "Sivaguru_Ravi_Resume.pdf"
+    },
     "stats": [
       { "to": 9, "suffix": "+", "label": "YRS_EXPERIENCE" },
       { "to": 50, "suffix": "+", "label": "ENGINEERS_MENTORED" },
