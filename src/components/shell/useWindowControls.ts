@@ -191,6 +191,11 @@ export function useWindowControls(winRef: React.RefObject<HTMLDivElement | null>
     () => setState((s) => ({ ...s, min: true })),
     [],
   );
+  /* un-minimize without touching maximize (a deep link restoring the win) */
+  const restore = useCallback(
+    () => setState((s) => (s.min ? { ...s, min: false } : s)),
+    [],
+  );
   const toggleMin = useCallback(() => {
     if (draggedRef.current) return;
     setState((s) => ({ ...s, min: !s.min }));
@@ -213,5 +218,14 @@ export function useWindowControls(winRef: React.RefObject<HTMLDivElement | null>
           height: state.size ? state.size.h : 340,
         };
 
-  return { state, style, onHeadDown, onResizeDown, minimize, toggleMin, toggleMax };
+  return {
+    state,
+    style,
+    onHeadDown,
+    onResizeDown,
+    minimize,
+    restore,
+    toggleMin,
+    toggleMax,
+  };
 }

@@ -39,7 +39,15 @@ export function ShellBody({ engine }: { engine: TerminalEngine }) {
     engine.getLines,
     engine.getLines,
   );
+  /* identity changes only when a live line opens or closes — the text it
+   * shows in between arrives on the imperative channel below */
+  const live = useSyncExternalStore(
+    engine.subscribe,
+    engine.getLive,
+    engine.getLive,
+  );
   const bodyRef = useRef<HTMLDivElement>(null);
+  const liveRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // completion-cycle + history-walk state (never triggers log re-render)
@@ -51,7 +59,20 @@ export function ShellBody({ engine }: { engine: TerminalEngine }) {
   useEffect(() => {
     const body = bodyRef.current;
     if (body) body.scrollTop = body.scrollHeight;
-  }, [lines]);
+  }, [lines, live]);
+
+  /* per-frame progress paints textContent directly — no re-render, so the
+   * log above it never repaints while the bar fills (plan §4) */
+  useEffect(() => {
+    const el = liveRef.current;
+    if (!el) return;
+    el.textContent = engine.getLiveText();
+    return engine.subscribeLiveText((text) => {
+      el.textContent = text;
+      const body = bodyRef.current;
+      if (body) body.scrollTop = body.scrollHeight;
+    });
+  }, [engine, live]);
 
   useEffect(() => {
     shellFocus.fn = () => inputRef.current?.focus();
@@ -131,6 +152,14 @@ export function ShellBody({ engine }: { engine: TerminalEngine }) {
       onClick={() => inputRef.current?.focus()}
     >
       <LogView lines={lines} />
+      {live && (
+        <div
+          ref={liveRef}
+          className={styles.line}
+          data-tone={live.tone}
+          data-term-live
+        />
+      )}
       <div className={styles.promptRow}>
         <span className={styles.promptLabel}>{PROMPT}</span>
         <span className={styles.inputWrap}>

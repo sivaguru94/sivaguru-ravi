@@ -30,6 +30,19 @@ test.describe("sections (M2 pixel pass)", () => {
     ).toBeVisible();
   });
 
+  test("hero stats bar offers the resume download", async ({ page }) => {
+    await page.goto("/");
+    const link = page
+      .getByRole("banner")
+      .getByRole("link", { name: "Download resume (PDF)" });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("href", "/Sivaguru_Ravi_Resume.pdf");
+    await expect(link).toHaveAttribute("download", "Sivaguru_Ravi_Resume.pdf");
+
+    const res = await page.request.head("/Sivaguru_Ravi_Resume.pdf");
+    expect(res.status()).toBe(200);
+  });
+
   test("work: 5 cards, current role accented", async ({ page }) => {
     await page.goto("/");
     const cards = page.locator("#work h3");
